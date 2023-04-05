@@ -1,3 +1,4 @@
+const games = require("./games");
 
 const dataSet = {
     default: [ 'Hello, UMWUG!'],
@@ -21,28 +22,7 @@ const dataSet = {
         fines: 0,
         loans: [ {title: 'Bible (KJV)', due: '20181226'}, { title: 'Public Speaking', due: '20181226'} ]
     },
-    cpe: {
-        gamechoices: [
-            "Falken's Maze",
-            'Black Jack',
-            'Gin Rummy',
-            'Hearts',
-            'Bridge',
-            'Checkers',
-            'Chess',
-            'Poker',
-            'Fighter Combat',
-            'Guerrilla Engagement',
-            'Desert Warfare',
-            'Air-To-Ground Actions',
-            'Theaterwide Tactical Warfare',
-            'Theaterwide Biotoxic and Chemical Warfare',
-            'Global Thermonuclear War'
-        ],
-        hiddengames: [
-            'Tic-Tac-Toe'
-        ]
-    },
+    cpe: games.all(),
     dev: [ 'https://developers.exlibrisgroup.com' ],
     doc: [ 'https://developers.exlibrisgroup.com/alma/apis/users' ],
     lhf: [
@@ -66,8 +46,29 @@ const dataSet = {
     ]
 }
 
-const getData = function (code) {
-    let key = (code !== null && code !== '') ? code.toLowerCase() : 'default';
-    key = ( (key in dataSet) ? key : 'default' );
-	return dataSet[key];
+const get = async (code = null) => {
+
+	return new Promise(async (resolve, reject) => {
+
+		let body = null;
+    
+        try {
+            let key = (code !== null && code !== '') ? code.toLowerCase() : 'default';
+            key = ( (key in dataSet) ? key : 'default' );
+            
+            body = dataSet[key];
+
+            resolve( body );
+                
+        } catch (error) {
+            tools.DebugAndLog.error("get umwug error", error);
+            reject( { msg: "error" } );
+        };
+
+    });
+
+};
+
+module.exports = {
+	get
 };

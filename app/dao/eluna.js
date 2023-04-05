@@ -1,3 +1,5 @@
+const ball = require("./ball");
+const games = require("./games");
 
 const dataSet = {
     default: [ 'Hello, ELUNA!'],
@@ -21,28 +23,7 @@ const dataSet = {
         fines: 0,
         loans: [ {title: 'Bible (KJV)', due: '20181226'}, { title: 'Public Speaking', due: '20181226'} ]
     },
-    cpe: {
-        gamechoices: [
-            "Falken's Maze",
-            'Black Jack',
-            'Gin Rummy',
-            'Hearts',
-            'Bridge',
-            'Checkers',
-            'Chess',
-            'Poker',
-            'Fighter Combat',
-            'Guerrilla Engagement',
-            'Desert Warfare',
-            'Air-To-Ground Actions',
-            'Theaterwide Tactical Warfare',
-            'Theaterwide Biotoxic and Chemical Warfare',
-            'Global Thermonuclear War'
-        ],
-        hiddengames: [
-            'Tic-Tac-Toe'
-        ]
-    },
+    cpe: games.all(),
     dev: [ 'https://developers.exlibrisgroup.com' ],
     doc: [ 'https://developers.exlibrisgroup.com/alma/apis/users' ],
     lhf: [
@@ -64,17 +45,33 @@ const dataSet = {
 	    'https://api-na.hosted.exlibrisgroup.com/almaws/v1/bibs/{{mms_id}}/holdings/{{holding_id}}/items/?format={{format}}&apikey={{apikey}}',
 	    'https://api-na.hosted.exlibrisgroup.com/almaws/v1/bibs/{{mms_id}}/holdings/{{holding_id}}/items/{{item_pid}}/requests?user_id={{user_id}}&format={{format}}&apikey={{apikey}}'
     ],
-    '8bl': eight()
+    '8bl': ball.prediction()
 }
 
-const getData = function (code) {
-    let key = (code !== null && code !== '') ? code.toLowerCase() : 'default';
-    key = ( (key in dataSet) ? key : 'default' );
-	return dataSet[key];
+const get = async (code = null) => {
+
+	return new Promise(async (resolve, reject) => {
+
+		let body = null;
+    
+        try {
+            let key = (code !== null && code !== '') ? code.toLowerCase() : 'default';
+            key = ( (key in dataSet) ? key : 'default' );
+            
+            body = dataSet[key];
+
+            resolve( body );
+                
+        } catch (error) {
+            tools.DebugAndLog.error("get eluna error", error);
+            reject( { msg: "error" } );
+        };
+
+    });
+
 };
 
-const eight = function () {
-    const answers = [ 'It is certain', 'It is decidedly so', 'Without a doubt', 'Yes definitely', 'You may rely on it', 'As I see it, yes', 'Most likely', 'Outlook good', 'Yes', 'Signs point to yes', 'Reply hazy try again', 'Ask again later', 'Better not tell you now', 'Cannot predict now', 'Concentrate and ask again', "Don't count on it", 'My reply is no', 'My sources say no', 'Outlook not so good', 'Very doubtful' ];
-    const rand = Math.floor(Math.random() * answers.length);
-	return answers[rand];
+
+module.exports = {
+	get
 };

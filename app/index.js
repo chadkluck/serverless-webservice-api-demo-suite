@@ -23,11 +23,12 @@ For other notes and info, refer to README.md
 
 "use strict";
 
-const { tools, cache, endpoint } = require('@chadkluck/cache-data');
+const { tools } = require('@chadkluck/cache-data');
+const { ball, eluna, umwug, games, weather, test } = require('./dao/index.js');
 const obj = require("./classes.js");
 
 /* increase the log level - comment out when not needed  */
-tools.DebugAndLog.setLogLevel(0, "2025-10-30T04:59:59Z"); // we can increase the debug level with an expiration
+tools.DebugAndLog.setLogLevel(5, "2025-10-30T04:59:59Z"); // we can increase the debug level with an expiration
 
 /* log a cold start and keep track of init time */
 const coldStartInitTimer = new tools.Timer("coldStartTimer", true);
@@ -190,37 +191,38 @@ const processRequest = async function(event, context) {
 
 				try {
 					
-
-					/* Tasks - We will be calling multiple APIs simultainously. */
+					/* Tasks - We will be calling only 1 api, but this allows us to call multiple simultanously in future. */
 					let appTasks = []; // we'll collect the tasks and their promises here
 
-					appTasks.push(taskGetGames());
-					appTasks.push(taskGetPrediction());
-					appTasks.push(taskGetWeather());
+					const endpoint = 'ball';
+
+					switch (endpoint) {
+						case 'ball':
+							appTasks.push(ball.get());
+							break;
+						case 'eluna':
+							appTasks.push(eluna.get());
+							break;
+						case 'games':
+							appTasks.push(games.get());
+							break;
+						case 'umwug':
+							appTasks.push(umwug.get());
+							break;
+						case 'weather':
+							appTasks.push(weather.get(obj.Config.getConnection("weather")));
+							break;
+						default:
+							//appTasks.push(taskTest());
+							break;
+					}
 
 					/* this will return everything promised into an indexed array */
 					let appCompletedTasks = await Promise.all(appTasks);
 
-					// tools.TestResponseDataModel.run(); // demo/test ResponseDataModel
-
-					/**
-					 *  Responses from each task are collected into this Response object 
-					 */
-					const dataResponse = new obj.Response({game: "", prediction: "", weather: {}});
-
-					/* Go through the indexed array of task responses and insert
-					them by key into the final response object. */
-					for (const item of appCompletedTasks) {
-						tools.DebugAndLog.debug("Response Item",item);
-						dataResponse.addItemByKey(item);
-					};
-
-					/**
-					 * A response object formatted for API Gateway
-					 */
 					let response = {
 						statusCode: 200,
-						body: dataResponse.toString(),
+						body: JSON.stringify(appCompletedTasks[0]),
 						headers: {'content-type': 'application/json'}
 					};
 
@@ -236,158 +238,6 @@ const processRequest = async function(event, context) {
 				};
 			});
 		};
-
-		/*
-		=======================================================================
-		Tasks
-		*/
-
-		/**
-		 * Calls the games external api for a list of games and randomly
-		 * selects a game.
-		 * @returns {Response} a randomly selected game
-		 */
-		const taskGetGames = async () => {
-
-			return new Promise(async (resolve, reject) => {
-
-				const timerTaskGetGames = new tools.Timer("timerTaskGetGames", true);
-
-				try {
-
-					// we are going to modify the connection by adding a path
-					let connection = obj.Config.getConnection("demo");
-					let conn = connection.toObject();
-					conn.path = "/games/";
-
-					let cacheCfg = connection.getCacheProfile("games");
-
-					const cacheObj = await cache.CacheableDataAccess.getData(
-						cacheCfg, 
-						endpoint.getDataDirectFromURI,
-						conn, 
-						null
-					);
-
-					let games = cacheObj.getBody(true);
-					let body = "";
-
-					// as long as we got what we expected, pick a game based on cosmic chance
-					if( games instanceof Object && "gamechoices" in games && Array.isArray(games.gamechoices) ) {
-						body = games.gamechoices[Math.floor(Math.random() * games.gamechoices.length)];
-					}
-
-					timerTaskGetGames.stop();
-					resolve( new obj.Response(body, "game") );
-					
-				} catch (error) {
-					tools.DebugAndLog.error("taskGetGames CacheController error", error);
-					timerTaskGetGames.stop();
-					reject( new obj.Response({ msg: "error" }, "game") );
-				};
-
-			});
-
-		};
-
-		/**
-		 * Calls the magic ball api for a prediction
-		 * @returns {Response} A prediction
-		 */
-		const taskGetPrediction = async () => {
-
-			return new Promise(async (resolve, reject) => {
-
-				const timerTaskGetPrediction = new tools.Timer("timerTaskGetPrediction", true);
-
-				try {
-
-					// we are going to modify the connection by adding a path
-					let connection = obj.Config.getConnection("demo");
-					let conn = connection.toObject();
-					conn.path = "/8ball/";
-
-					let cacheCfg = connection.getCacheProfile("prediction");
-
-					const cacheObj = await cache.CacheableDataAccess.getData(
-						cacheCfg, 
-						endpoint.getDataDirectFromURI,
-						conn, 
-						null
-					);
-
-					let prediction = cacheObj.getBody(true);
-					let body = "";
-
-					// only return the string
-					if( prediction instanceof Object && "item" in prediction && typeof prediction.item === "string" ) {
-						body = prediction.item;
-					}
-
-					timerTaskGetPrediction.stop();
-					resolve( new obj.Response(body, "prediction") );
-					
-				} catch (error) {
-					tools.DebugAndLog.error("taskGetPrediction CacheController error", error);
-					timerTaskGetPrediction.stop();
-					reject( new obj.Response({ msg: "error" }, "prediction") );
-				};
-
-			});
-
-		};
-
-		/**
-		 * Connects to an external weather api and retrieves weather information
-		 * @returns {Response} weather information
-		 */
-		const taskGetWeather = async () => {
-
-			return new Promise(async (resolve, reject) => {
-
-				const timerTaskGetWeather = new tools.Timer("timerTaskGetWeather", true);
-
-				try {
-
-					let connection = obj.Config.getConnection("weather");
-					let conn = connection.toObject();
-					// conn.path = ""; // we will just use the path set in the connection details
-
-					let body = {};
-
-					if (conn.parameters.appid !== "") {
-
-						let cacheCfg = connection.getCacheProfile("default");
-
-						const cacheObj = await cache.CacheableDataAccess.getData(
-							cacheCfg, 
-							endpoint.getDataDirectFromURI,
-							conn, 
-							null
-						);
-
-						body = cacheObj.getBody(true);
-					} else {
-						body = { message: "weather api key not set" };
-					}
-
-					timerTaskGetWeather.stop();
-					resolve( new obj.Response(body, "weather") );
-					
-				} catch (error) {
-					tools.DebugAndLog.error("taskGetWeather CacheController error", error);
-					timerTaskGetWeather.stop();
-					reject( new obj.Response({ msg: "error" }, "weather") );
-				};
-
-			});
-
-		};
-
-		/*
-		=======================================================================
-		execute() code
-		*/
 
 		return await main();
 

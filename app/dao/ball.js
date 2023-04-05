@@ -1,3 +1,4 @@
+const { tools } = require('@chadkluck/cache-data');
 
 /**
  * Possible prediction answers
@@ -57,4 +58,57 @@ const luckyNumbers = function () {
  */
 const certainty = function () {
 	return Math.random();
+};
+
+
+/**
+ * Gets ball data
+ * @param {string} code
+ * @returns {object} An 8 Ball object based on code
+ */
+const get = async (code = null) => {
+
+	return new Promise(async (resolve, reject) => {
+
+		let body = null;
+
+		try {
+
+			code = (code === null) ? 'prediction' : code.toLowerCase();
+
+			switch (code) {
+				case 'answers':
+					body = { answers: answers };
+					break;
+				case 'data':
+					body = data();
+					break;
+				case 'luckynumbers':
+					body = luckyNumbers();
+					break;
+				case 'certainty':
+					body = certainty();
+				default:
+					body = prediction();
+					break;
+			}
+
+			resolve( body );
+			
+		} catch (error) {
+			tools.DebugAndLog.error("ball error", error);
+			reject( { msg: "error" } );
+		};
+
+	});
+
+};
+
+module.exports = {
+	answers,
+	data,
+	prediction,
+	luckyNumbers,
+	certainty,
+	get
 };

@@ -234,37 +234,6 @@ class Config extends tools._ConfigSuperClass {
 				from the Param store
 				*/
 
-				// for both magic ball and games demo from api.chadkluck.net
-				connections.add( {
-					name: "demo",
-					host: "api.chadkluck.net",
-					parameters: {},
-					headers: {
-						referer: "https://chadkluck.net"
-					},
-					cache: [
-						{
-							profile: "games",
-							overrideOriginHeaderExpiration: true, 
-							defaultExpirationInSeconds: (10 * 60),// , // 10 minutes
-							expirationIsOnInterval: true,
-							headersToRetain: "",
-							host: "demo", // log entry friendly (or not)
-							path: "games",  // log entry friendly (or not)
-							encrypt: false
-						},
-						{
-							profile: "prediction",
-							overrideOriginHeaderExpiration: true, 
-							defaultExpirationInSeconds: (1),// , // 1 second
-							expirationIsOnInterval: true,
-							headersToRetain: "",
-							host: "demo", // log entry friendly (or not)
-							path: "prediction", // log entry friendly (or not)
-							encrypt: true
-						}
-					]
-				} );
 
 				// https://openweathermap.org/current
 				// go to openweathermap.org and create an appid api key and save it in parameter store
