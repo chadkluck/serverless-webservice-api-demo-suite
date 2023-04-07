@@ -3,7 +3,8 @@ const { tools } = require('@chadkluck/cache-data');
 /**
  * Possible prediction answers
  */
-const answers = [ "It is certain",
+const answers = [ 
+	"It is certain",
 	"It is decidedly so",
 	"Without a doubt",
 	"Yes definitely",
@@ -26,10 +27,22 @@ const answers = [ "It is certain",
 ];
 
 /**
+ * 
+ * @returns {object} An object containing an array of possible answers
+ */
+const list = function () {
+	return { list: answers };
+};
+
+/**
  * @returns {{prediction: String, lucky_numbers: array<number>, certainty: number}} An object with predictions made by the all powerful, all knowing oracle along with its level of certainty
  */
 const data = function () {
-	return { prediction: prediction(), lucky_numbers: luckyNumbers(), certainty: certainty() }
+	return { 
+		...prediction(),
+		...luckyNumbers(),
+		...certainty()
+	};
 };
 
 /**
@@ -37,7 +50,7 @@ const data = function () {
  */
 const prediction = function () {
 	const rand = Math.floor(Math.random() * answers.length);
-	return answers[rand];
+	return { prediction: answers[rand]};
 };
 
 /**
@@ -46,10 +59,14 @@ const prediction = function () {
  */
 const luckyNumbers = function () {
 	let numbers = [];
-	for (let i = 0; i < 8; i++) {
-		numbers[i] = Math.floor(Math.random() * 99 );
+	for (let i = 0; i < 6; i++) {
+		let luckyNumber = 0;
+		do { // make sure all numbers in array are unique
+			luckyNumber = Math.floor(Math.random() * 99 );
+		} while (numbers.includes(luckyNumber))
+		numbers[i] = luckyNumber;
 	}
-	return numbers;
+	return { lucky_numbers: numbers };
 };
 
 /**
@@ -57,7 +74,7 @@ const luckyNumbers = function () {
  * @returns {number} A level of certainty for the prediction
  */
 const certainty = function () {
-	return Math.random();
+	return { certainty: Math.random() };
 };
 
 
@@ -74,22 +91,23 @@ const get = async (code = null) => {
 
 		try {
 
-			code = (code === null) ? 'prediction' : code.toLowerCase();
+			code = (code === null) ? 'data' : code.toLowerCase();
 
 			switch (code) {
-				case 'answers':
-					body = { answers: answers };
+				case 'list':
+					body = list();
 					break;
-				case 'data':
-					body = data();
+				case 'prediction':
+					body = prediction();
 					break;
 				case 'luckynumbers':
 					body = luckyNumbers();
 					break;
 				case 'certainty':
 					body = certainty();
+					break;
 				default:
-					body = prediction();
+					body = data();
 					break;
 			}
 
@@ -105,7 +123,7 @@ const get = async (code = null) => {
 };
 
 module.exports = {
-	answers,
+	list,
 	data,
 	prediction,
 	luckyNumbers,
