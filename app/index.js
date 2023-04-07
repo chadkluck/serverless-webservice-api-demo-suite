@@ -214,8 +214,11 @@ const processRequest = async function(event, context) {
 							break;
 						default:
 							//appTasks.push(taskTest());
+							appTasks.push(ball.get());
 							break;
 					}
+
+					tools.DebugAndLog.debug("EVENT", {event, context});
 
 					/* this will return everything promised into an indexed array */
 					let appCompletedTasks = await Promise.all(appTasks);
