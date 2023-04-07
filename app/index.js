@@ -117,10 +117,10 @@ const processRequest = async function(event, context) {
 	/**
 	 * Log an error. Sends to obj.Log.critical()
 	 * @param {string} text 
-	 * @param {object} obj 
+	 * @param {object} pObj 
 	 */
-	const logCritical = async function( text, obj = null) {
-		obj.Log.critical( text, obj, REQ );
+	const logCritical = async function( text, pObj = null) {
+		obj.Log.critical( text, pObj, REQ );
 	};
 
 	/* 
