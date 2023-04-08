@@ -217,11 +217,12 @@ const processRequest = async function(event, context) {
 							appTasks.push(echo.get(event));
 							break;
 						case 'weather':
+							// add event.queryStringParameters to conn
 							appTasks.push(weather.get(obj.Config.getConnection("weather")));
 							break;
 						default:
 							//appTasks.push(taskTest());
-							appTasks.push(root.get());
+							appTasks.push(root.get(event));
 							break;
 					}
 

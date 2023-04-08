@@ -1,4 +1,4 @@
-const body = {
+const data = {
 	greeting: 'Welcome to the 63K-Labs API Test Suite by Chad Leigh Kluck',
 	github: '',
 	description: 'A suite of apis that can be used as examples and for testing. Visit the GitHub repository link to learn more about each',
@@ -55,12 +55,15 @@ const body = {
 	]
 };
 
-const get = async () => {
+const get = async (event) => {
 
 	return new Promise(async (resolve, reject) => {
 
         try {
+			const domain = event.requestContext.domainName;
+			const path = event.requestContext.path;
 
+			let body = JSON.parse((JSON.stringify(body)).replace('{{domain}}', domain).replace('{{path}}', path));
             resolve( body );
                 
         } catch (error) {
