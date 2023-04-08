@@ -267,11 +267,11 @@ Resources:
     Properties: 
       Name: !Sub '${Prefix}-${ProjectStageId}-WebApi'
       StageName: !If [ IsCodeStar, "Prod", !Ref ApiPathBase] # First part of the path in the URI "https://${WebApi}.execute-api.${AWS::Region}.amazonaws.com/api/" CodeStar dashboard uses Prod. However, if you don't care, you can use your regular setting
-      DefinitionBody:
-        "Fn::Transform":
-          Name: "AWS::Include"
-          Parameters:
-            Location: ./swagger.yml
+      # DefinitionBody:
+      #   "Fn::Transform":
+      #     Name: "AWS::Include"
+      #     Parameters:
+      #       Location: ./swagger.yml
             
   # -- Lambda Function --
   AppFunction: # If you rename FunctionName you need to rename this and vice versa
