@@ -24,7 +24,7 @@ For other notes and info, refer to README.md
 "use strict";
 
 const { tools } = require('@chadkluck/cache-data');
-const { ball, eluna, umwug, games, weather, test } = require('./dao/index.js');
+const { ball, eluna, umwug, games, weather, test, root, echo } = require('./dao/index.js');
 const obj = require("./classes.js");
 
 /* increase the log level - comment out when not needed  */
@@ -194,27 +194,34 @@ const processRequest = async function(event, context) {
 					/* Tasks - We will be calling only 1 api, but this allows us to call multiple simultanously in future. */
 					let appTasks = []; // we'll collect the tasks and their promises here
 
-					const endpoint = 'ball';
+					const id = event.pathParameters.id;
+					const code = ('code' in event.queryStringParameters) ? event.queryStringParameters.code : null;
 
-					switch (endpoint) {
+					switch (id) {
 						case 'ball':
-							appTasks.push(ball.get());
+							appTasks.push(ball.get(code));
 							break;
 						case 'eluna':
-							appTasks.push(eluna.get());
+							appTasks.push(eluna.get(code));
 							break;
 						case 'games':
-							appTasks.push(games.get());
+							appTasks.push(games.get(code));
 							break;
 						case 'umwug':
-							appTasks.push(umwug.get());
+							appTasks.push(umwug.get(code));
+							break;
+						case 'test':
+							appTasks.push(test.get(event));
+							break;
+						case 'echo':
+							appTasks.push(echo.get(event));
 							break;
 						case 'weather':
 							appTasks.push(weather.get(obj.Config.getConnection("weather")));
 							break;
 						default:
 							//appTasks.push(taskTest());
-							appTasks.push(ball.get());
+							appTasks.push(root.get());
 							break;
 					}
 

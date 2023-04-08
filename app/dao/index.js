@@ -4,6 +4,8 @@ const umwug = require("./umwug.js");
 const games = require("./games.js");
 const weather = require("./weather.js");
 const test = require("./test.js");
+const root = require("./root.js");
+const echo = require("./echo.js");
 
 module.exports = {
 	ball,
@@ -11,5 +13,7 @@ module.exports = {
 	umwug,
 	games,
 	weather,
-	test
+	test,
+	root,
+	echo
 };
