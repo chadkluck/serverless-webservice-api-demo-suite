@@ -302,7 +302,7 @@ Resources:
         GetEvent:
           Type: Api
           Properties:
-            Path: /
+            Path: /{proxy+}
             Method: get
             RestApiId: !Ref WebApi
             RequestParameters:
