@@ -2,7 +2,7 @@ const ball = require("./ball");
 const games = require("./games");
 
 const dataSet = {
-    default: [ 'Hello, ELUNA!'],
+    default: [ 'Hello, ELUNA!' ],
     bao: ['banana', 'apples', 'oranges'],
     cbl: [
         {
@@ -63,7 +63,6 @@ const get = async (code = null) => {
             resolve( body );
                 
         } catch (error) {
-            tools.DebugAndLog.error("get eluna error", error);
             reject( { msg: "error" } );
         };
 

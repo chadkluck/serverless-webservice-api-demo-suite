@@ -61,7 +61,6 @@ const get = async (code = null) => {
             resolve( body );
                 
         } catch (error) {
-            tools.DebugAndLog.error("get umwug error", error);
             reject( { msg: "error" } );
         };
 

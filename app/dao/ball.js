@@ -1,5 +1,3 @@
-const { tools } = require('@chadkluck/cache-data');
-
 /**
  * Possible prediction answers
  */
@@ -28,14 +26,14 @@ const answers = [
 
 /**
  * 
- * @returns {object} An object containing an array of possible answers
+ * @returns {{list: array<string>}} An object containing an array of possible responses
  */
 const list = function () {
 	return { list: answers };
 };
 
 /**
- * @returns {{prediction: String, lucky_numbers: array<number>, certainty: number}} An object with predictions made by the all powerful, all knowing oracle along with its level of certainty
+ * @returns {{prediction: string, lucky_numbers: array<number>, certainty: number}} An object with predictions made by the all powerful, all knowing oracle along with its level of certainty
  */
 const data = function () {
 	return { 
@@ -46,7 +44,7 @@ const data = function () {
 };
 
 /**
- * @returns {string} A prediction from the all powerful, all knowing, oracle.
+ * @returns {{prediction: string}} A prediction from the all powerful, all knowing, oracle.
  */
 const prediction = function () {
 	const rand = Math.floor(Math.random() * answers.length);
@@ -55,7 +53,7 @@ const prediction = function () {
 
 /**
  * 
- * @returns {Array<number>} An array of 7 lucky numbers
+ * @returns {{lucky_numbers: Array<number>}} An array of 7 lucky numbers
  */
 const luckyNumbers = function () {
 	let numbers = [];
@@ -71,7 +69,7 @@ const luckyNumbers = function () {
 
 /**
  * 
- * @returns {number} A level of certainty for the prediction
+ * @returns {{certainty: number}} A level of certainty for the prediction
  */
 const certainty = function () {
 	return { certainty: Math.random() };
@@ -79,7 +77,8 @@ const certainty = function () {
 
 
 /**
- * Gets ball data
+ * Gets ball data (async)
+ * If code is null, empty, or invalid, an object containing a prediction, lucky numbers, and certainty is returned
  * @param {string} code
  * @returns {object} An 8 Ball object based on code
  */
@@ -91,7 +90,7 @@ const get = async (code = null) => {
 
 		try {
 
-			code = (code === null) ? 'data' : code.toLowerCase();
+			code = (code === null || code === '' || typeof code !== 'string') ? 'data' : code.toLowerCase();
 
 			switch (code) {
 				case 'list':
@@ -114,7 +113,6 @@ const get = async (code = null) => {
 			resolve( body );
 			
 		} catch (error) {
-			tools.DebugAndLog.error("ball error", error);
 			reject( { msg: "error" } );
 		};
 

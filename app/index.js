@@ -1,6 +1,6 @@
 /* 
 *******************************************************************************
-Serverless Demo Template with internal Cache Restful API
+Serverless Demo Suite with internal Cache Restful API
 *******************************************************************************
 
 Version: 0.1.0-2023-04-04-1800
@@ -11,7 +11,7 @@ GitHub: https://github.com/chadkluck
 
 -------------------------------------------------------------------------------
 
-This is a template for an AWS Lambda function that provides an api service
+This is a demo for an AWS Lambda function that provides api services
 via API Gateway. Internal caching utilizes DynamoDb and S3.
 
 -------------------------------------------------------------------------------

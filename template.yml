@@ -305,12 +305,9 @@ Resources:
             Path: /
             Method: get
             RestApiId: !Ref WebApi
-        PostEvent:
-          Type: Api
-          Properties:
-            Path: /
-            Method: post
-            RestApiId: !Ref WebApi
+            RequestParameters:
+              - method.request.path
+
             
       Role:
         Fn::GetAtt:

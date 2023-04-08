@@ -1,63 +1,69 @@
-const { tools } = require('@chadkluck/cache-data');
 
-const games = {
-	"gamechoices": [
-		"Falken's Maze",
-		"Black Jack",
-		"Gin Rummy",
-		"Hearts",
-		"Bridge",
-		"Checkers",
-		"Chess",
-		"Poker",
-		"Fighter Combat",
-		"Guerrilla Engagement",
-		"Desert Warfare",
-		"Air-To-Ground Actions",
-		"Theaterwide Tactical Warfare",
-		"Theaterwide Biotoxic and Chemical Warfare",
-		"Global Thermonuclear War"
-	],
-	"hiddengames": [
-		"Tic-Tac-Toe"
-	]
-};
+const gamechoices = [
+	"Falken's Maze",
+	"Black Jack",
+	"Gin Rummy",
+	"Hearts",
+	"Bridge",
+	"Checkers",
+	"Chess",
+	"Poker",
+	"Fighter Combat",
+	"Guerrilla Engagement",
+	"Desert Warfare",
+	"Air-To-Ground Actions",
+	"Theaterwide Tactical Warfare",
+	"Theaterwide Biotoxic and Chemical Warfare",
+	"Global Thermonuclear War"
+];
 
-/**
- * A greeting catchphrase
- */
-const greeting = 'Would you like to play a game?';
+const hiddengames = [ "Tic-Tac-Toe" ];
 
 /**
  * 
- * @returns {string} a game randomly picked from the list
+ * @returns {{greeting: string}} A greeting string
+ */
+const greeting = function () {
+	return { greeting: 'Would you like to play a game?'};
+};
+
+/**
+ * 
+ * @returns {{name: string}} A name
+ */
+const name = function () {
+	return { name: 'Joshua' };
+};
+
+/**
+ * 
+ * @returns {{game: string}} a game randomly picked from the list
  */
 const random = function () {
-	const rand = Math.floor(Math.random() * list().length);
-	return list()[rand];
+	const rand = Math.floor(Math.random() * gamechoices.length);
+	return { game: gamechoices[rand] };
 };
 
 /**
  * 
- * @returns {array<string>} An array of games
+ * @returns {{gamechoices: array<string>}} An array of games
  */
 const list = function () {
-	return games.gamechoices;	
+	return { gamechoices };
 };
 
 /**
  * 
- * @returns {object} All games
+ * @returns {{gamechoices: array<string>, hiddengames: array<string>}} All games
  */
 const all = function () {
-	return games;
+	return { gamechoices, hiddengames };
 };
 
-
 /**
- * Calls the games dao
+ * async Get game data
  * @param {string} code the command to execute
- * @returns {Response} requested game data
+ * @returns {object} requested game data
  */
 const get = async (code = null) => {
 
@@ -67,11 +73,14 @@ const get = async (code = null) => {
 
 		try {
 
-			code = (code === null) ? 'all' : code.toLowerCase();
+			code = (code === null || code === '' || typeof code !== 'string') ? 'all' : code.toLowerCase();
 
 			switch (code) {
 				case 'greeting':
-					body = { greeting: greeting };
+					body = greeting();
+					break;
+				case 'name':
+					body = name();
 					break;
 				case 'random':
 					body = random();
@@ -87,7 +96,6 @@ const get = async (code = null) => {
 			resolve( body );
 			
 		} catch (error) {
-			tools.DebugAndLog.error("games error", error);
 			reject( { msg: "error" } );
 		};
 
@@ -97,6 +105,7 @@ const get = async (code = null) => {
 
 module.exports = {
 	greeting,
+	name,
 	random,
 	list,
 	all,
