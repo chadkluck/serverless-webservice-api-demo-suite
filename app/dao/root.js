@@ -7,7 +7,7 @@ const data = {
 			name: 'Games',
 			description: '',
 			method: 'GET',
-			domain: '{{domain}}',
+			endpoint: '{{domain}}',
 			path: '{{path}}/games'
 		},
 		{

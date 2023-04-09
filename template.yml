@@ -299,11 +299,29 @@ Resources:
 
 
       Events:
-        GetEvent:
+        GetEventRoot:
+          Type: Api
+          Properties:
+            Path: /
+            Method: get
+            RestApiId: !Ref WebApi
+        GetEventId:
           Type: Api
           Properties:
             Path: /{id}
             Method: get
+            RestApiId: !Ref WebApi
+        PostEventRoot:
+          Type: Api
+          Properties:
+            Path: /
+            Method: post
+            RestApiId: !Ref WebApi
+        PostEventId:
+          Type: Api
+          Properties:
+            Path: /{id}
+            Method: post
             RestApiId: !Ref WebApi
 
             
