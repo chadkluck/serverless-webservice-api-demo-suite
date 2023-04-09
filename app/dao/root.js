@@ -8,14 +8,29 @@ const data = {
 			description: '',
 			method: 'GET',
 			endpoint: '{{domain}}',
-			path: '{{path}}/games'
+			path: '{{path}}/games',
+			examples: [
+				'https://{{domain}}/{{path}}/games',
+				'https://{{domain}}/{{path}}/games?code=greeting',
+				'https://{{domain}}/{{path}}/games?code=name',
+				'https://{{domain}}/{{path}}/games?code=random',
+				'https://{{domain}}/{{path}}/games?code=list',
+				'https://{{domain}}/{{path}}/games?code=all'
+			]
 		},
 		{
 			name: '8 Ball',
 			description: '',
 			method: 'GET',
 			domain: '{{domain}}',
-			path: '{{path}}/ball'
+			path: '{{path}}/ball',
+			examples: [
+				'https://{{domain}}/{{path}}/ball',
+				'https://{{domain}}/{{path}}/ball?code=prediction',
+				'https://{{domain}}/{{path}}/ball?code=luckynumbers',
+				'https://{{domain}}/{{path}}/ball?code=certainty',
+				'https://{{domain}}/{{path}}/ball?code=list'
+			]
 		},
 		{
 			name: 'ELUNA',
@@ -63,7 +78,7 @@ const get = async (event) => {
 			const domain = event.requestContext.domainName;
 			const path = event.requestContext.path;
 
-			let body = JSON.parse((JSON.stringify(body)).replace('{{domain}}', domain).replace('{{path}}', path));
+			let body = JSON.parse((JSON.stringify(body)).replaceAll('{{domain}}', domain).replaceAll('{{path}}', path));
             resolve( body );
                 
         } catch (error) {
