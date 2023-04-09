@@ -37,14 +37,41 @@ const data = {
 			description: '',
 			method: 'GET',
 			domain: '{{domain}}',
-			path: '{{path}}/eluna'
+			path: '{{path}}/eluna',
+			examples: [
+				'https://{{domain}}/{{path}}/eluna',
+				'https://{{domain}}/{{path}}/eluna?code=bao',
+				'https://{{domain}}/{{path}}/eluna?code=cbl',
+				'https://{{domain}}/{{path}}/eluna?code=lvp',
+				'https://{{domain}}/{{path}}/eluna?code=cpe',
+				'https://{{domain}}/{{path}}/eluna?code=dev',
+				'https://{{domain}}/{{path}}/eluna?code=doc',
+				'https://{{domain}}/{{path}}/eluna?code=lhf',
+				'https://{{domain}}/{{path}}/eluna?code=cpe',
+				'https://{{domain}}/{{path}}/eluna?code=git',
+				'https://{{domain}}/{{path}}/eluna?code=bns',
+				'https://{{domain}}/{{path}}/eluna?code=8bl'
+			]
 		},
 		{
 			name: 'UMWUG',
 			description: '',
 			method: 'GET',
 			domain: '{{domain}}',
-			path: '{{path}}/umwug'
+			path: '{{path}}/umwug',
+			examples: [
+				'https://{{domain}}/{{path}}/umwug',
+				'https://{{domain}}/{{path}}/umwug?code=bao',
+				'https://{{domain}}/{{path}}/umwug?code=cbl',
+				'https://{{domain}}/{{path}}/umwug?code=lvp',
+				'https://{{domain}}/{{path}}/umwug?code=cpe',
+				'https://{{domain}}/{{path}}/umwug?code=dev',
+				'https://{{domain}}/{{path}}/umwug?code=doc',
+				'https://{{domain}}/{{path}}/umwug?code=lhf',
+				'https://{{domain}}/{{path}}/umwug?code=cpe',
+				'https://{{domain}}/{{path}}/umwug?code=git',
+				'https://{{domain}}/{{path}}/umwug?code=bns'
+			]
 		},
 		{
 			name: 'Weather',
