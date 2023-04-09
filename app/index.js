@@ -194,7 +194,7 @@ const processRequest = async function(event, context) {
 					/* Tasks - We will be calling only 1 api, but this allows us to call multiple simultanously in future. */
 					let appTasks = []; // we'll collect the tasks and their promises here
 
-					const id = event.pathParameters.id;
+					const id = ('id' in event.pathParameters) ? event.pathParameters.id : null;
 					const code = ('code' in event.queryStringParameters) ? event.queryStringParameters.code : null;
 
 					switch (id) {
