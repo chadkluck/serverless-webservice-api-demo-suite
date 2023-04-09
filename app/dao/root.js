@@ -109,7 +109,7 @@ const get = async (event) => {
 			const domainRegEx = new RegExp('/{{domain}}/', 'gi');
 			const pathRegEx = new RegExp('/{{path}}/', 'gi');
 
-			let body = JSON.parse((JSON.stringify(data)).replaceAll(domainRegEx, domain).replaceAll(pathRegEx, path));
+			let body = JSON.parse((JSON.stringify(data)).replace(domainRegEx, domain).replace(pathRegEx, path));
             resolve( body );
                 
         } catch (error) {
