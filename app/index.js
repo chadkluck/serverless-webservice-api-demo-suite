@@ -244,7 +244,7 @@ const processRequest = async function(event, context) {
 				} catch (error) {
 					console.log("Main Error CL", error);
 					tools.DebugAndLog.error("Main error", error);
-					response = generateErrorResponse(new Error("Application encountered an error. Main", "500"));
+					let response = generateErrorResponse(new Error("Application encountered an error. Main", "500"));
 					timerMain.stop();
 					reject( response );
 				};
