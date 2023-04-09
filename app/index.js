@@ -191,6 +191,8 @@ const processRequest = async function(event, context) {
 
 				try {
 					
+					tools.DebugAndLog.debug("EVENT", {event, context});
+
 					/* Tasks - We will be calling only 1 api, but this allows us to call multiple simultanously in future. */
 					let appTasks = []; // we'll collect the tasks and their promises here
 
@@ -225,8 +227,6 @@ const processRequest = async function(event, context) {
 							appTasks.push(root.get(event));
 							break;
 					}
-
-					tools.DebugAndLog.debug("EVENT", {event, context});
 
 					/* this will return everything promised into an indexed array */
 					let appCompletedTasks = await Promise.all(appTasks);

@@ -1,5 +1,5 @@
 
-const { ball, eluna, umwug, games, weather, test } = require('../dao/index.js');
+const { root, ball, eluna, umwug, games, weather, test } = require('../dao/index.js');
 
 const chai = require("chai")
 const expect = chai.expect
@@ -21,6 +21,28 @@ function hook_stream (_stream, fn) {
 		_stream.write = old_write;
 	};
 };
+
+/* ****************************************************************************
+ *	Root
+ */
+
+
+ describe("Root", () => {
+
+	describe('List', () => {
+
+		it('Passed Variables', async () => {
+			const getList = await root.get({requestContext: { domainName: 'www.example.com', path: '/asdf/'}});
+
+			expect((typeof getList)).to.equal('object')
+			expect('greeting' in getList).to.be.true
+			expect('available_endpoints' in getList).to.be.true
+			expect(getList.available_endpoints[0].examples[0]).to.equal('https://www.example.com/asdf/games')
+		})
+
+	})
+
+});
 
 /* ****************************************************************************
  *	8 Ball
