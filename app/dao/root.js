@@ -102,10 +102,14 @@ const get = async (event) => {
 	return new Promise(async (resolve, reject) => {
 
         try {
+			console.log("ROOT EVENT", event);
 			const domain = event.requestContext.domainName;
 			const path = '/' + event.requestContext.path.replace(/^\/|\/$/g, '');
 
-			let body = JSON.parse((JSON.stringify(data)).replaceAll('{{domain}}', domain).replaceAll('{{path}}', path));
+			const domainRegEx = new RegExp('/{{domain}}/', 'gi');
+			const pathRegEx = new RegExp('/{{path}}/', 'gi');
+
+			let body = JSON.parse((JSON.stringify(data)).replaceAll(domainRegEx, domain).replaceAll(pathRegEx, path));
             resolve( body );
                 
         } catch (error) {
