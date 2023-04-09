@@ -10,12 +10,12 @@ const data = {
 			endpoint: '{{domain}}',
 			path: '{{path}}/games',
 			examples: [
-				'https://{{domain}}/{{path}}/games',
-				'https://{{domain}}/{{path}}/games?code=greeting',
-				'https://{{domain}}/{{path}}/games?code=name',
-				'https://{{domain}}/{{path}}/games?code=random',
-				'https://{{domain}}/{{path}}/games?code=list',
-				'https://{{domain}}/{{path}}/games?code=all'
+				'https://{{domain}}{{path}}/games',
+				'https://{{domain}}{{path}}/games?code=greeting',
+				'https://{{domain}}{{path}}/games?code=name',
+				'https://{{domain}}{{path}}/games?code=random',
+				'https://{{domain}}{{path}}/games?code=list',
+				'https://{{domain}}{{path}}/games?code=all'
 			]
 		},
 		{
@@ -25,11 +25,11 @@ const data = {
 			domain: '{{domain}}',
 			path: '{{path}}/ball',
 			examples: [
-				'https://{{domain}}/{{path}}/ball',
-				'https://{{domain}}/{{path}}/ball?code=prediction',
-				'https://{{domain}}/{{path}}/ball?code=luckynumbers',
-				'https://{{domain}}/{{path}}/ball?code=certainty',
-				'https://{{domain}}/{{path}}/ball?code=list'
+				'https://{{domain}}{{path}}/ball',
+				'https://{{domain}}{{path}}/ball?code=prediction',
+				'https://{{domain}}{{path}}/ball?code=luckynumbers',
+				'https://{{domain}}{{path}}/ball?code=certainty',
+				'https://{{domain}}{{path}}/ball?code=list'
 			]
 		},
 		{
@@ -39,18 +39,18 @@ const data = {
 			domain: '{{domain}}',
 			path: '{{path}}/eluna',
 			examples: [
-				'https://{{domain}}/{{path}}/eluna',
-				'https://{{domain}}/{{path}}/eluna?code=bao',
-				'https://{{domain}}/{{path}}/eluna?code=cbl',
-				'https://{{domain}}/{{path}}/eluna?code=lvp',
-				'https://{{domain}}/{{path}}/eluna?code=cpe',
-				'https://{{domain}}/{{path}}/eluna?code=dev',
-				'https://{{domain}}/{{path}}/eluna?code=doc',
-				'https://{{domain}}/{{path}}/eluna?code=lhf',
-				'https://{{domain}}/{{path}}/eluna?code=cpe',
-				'https://{{domain}}/{{path}}/eluna?code=git',
-				'https://{{domain}}/{{path}}/eluna?code=bns',
-				'https://{{domain}}/{{path}}/eluna?code=8bl'
+				'https://{{domain}}{{path}}/eluna',
+				'https://{{domain}}{{path}}/eluna?code=bao',
+				'https://{{domain}}{{path}}/eluna?code=cbl',
+				'https://{{domain}}{{path}}/eluna?code=lvp',
+				'https://{{domain}}{{path}}/eluna?code=cpe',
+				'https://{{domain}}{{path}}/eluna?code=dev',
+				'https://{{domain}}{{path}}/eluna?code=doc',
+				'https://{{domain}}{{path}}/eluna?code=lhf',
+				'https://{{domain}}{{path}}/eluna?code=cpe',
+				'https://{{domain}}{{path}}/eluna?code=git',
+				'https://{{domain}}{{path}}/eluna?code=bns',
+				'https://{{domain}}{{path}}/eluna?code=8bl'
 			]
 		},
 		{
@@ -60,17 +60,17 @@ const data = {
 			domain: '{{domain}}',
 			path: '{{path}}/umwug',
 			examples: [
-				'https://{{domain}}/{{path}}/umwug',
-				'https://{{domain}}/{{path}}/umwug?code=bao',
-				'https://{{domain}}/{{path}}/umwug?code=cbl',
-				'https://{{domain}}/{{path}}/umwug?code=lvp',
-				'https://{{domain}}/{{path}}/umwug?code=cpe',
-				'https://{{domain}}/{{path}}/umwug?code=dev',
-				'https://{{domain}}/{{path}}/umwug?code=doc',
-				'https://{{domain}}/{{path}}/umwug?code=lhf',
-				'https://{{domain}}/{{path}}/umwug?code=cpe',
-				'https://{{domain}}/{{path}}/umwug?code=git',
-				'https://{{domain}}/{{path}}/umwug?code=bns'
+				'https://{{domain}}{{path}}/umwug',
+				'https://{{domain}}{{path}}/umwug?code=bao',
+				'https://{{domain}}{{path}}/umwug?code=cbl',
+				'https://{{domain}}{{path}}/umwug?code=lvp',
+				'https://{{domain}}{{path}}/umwug?code=cpe',
+				'https://{{domain}}{{path}}/umwug?code=dev',
+				'https://{{domain}}{{path}}/umwug?code=doc',
+				'https://{{domain}}{{path}}/umwug?code=lhf',
+				'https://{{domain}}{{path}}/umwug?code=cpe',
+				'https://{{domain}}{{path}}/umwug?code=git',
+				'https://{{domain}}{{path}}/umwug?code=bns'
 			]
 		},
 		{
@@ -103,7 +103,7 @@ const get = async (event) => {
 
         try {
 			const domain = event.requestContext.domainName;
-			const path = event.requestContext.path;
+			const path = '/' + event.requestContext.path.replace(/^\/|\/$/g, '');
 
 			let body = JSON.parse((JSON.stringify(body)).replaceAll('{{domain}}', domain).replaceAll('{{path}}', path));
             resolve( body );
