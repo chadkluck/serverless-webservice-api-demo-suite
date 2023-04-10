@@ -53,15 +53,36 @@ const get = async (event) => {
 
 			if ( !(`${statusCode}` in statusCodes) ) {
 				response.statusCode = statusError.statusCode;
-				response.body = statusError.body.replace('{{STATUS}}', statusCode);
+				response.body = { message: statusError.body.replace('{{STATUS}}', statusCode) };
 			} else {
-				const redirect = (statusCode >= 300 && statusCode <= 399) ? "https://api.chadkluck.net/games" : "";
+				const redirect = (statusCode === 301 || statusCode === 302) ? "https://api.chadkluck.net/games" : "";
 				let body = null;
 				let headers = ( redirect ) ? {Location: redirect } : { "Content-Type": "application/json" };
 				let status = statusCode;
 
+				// lowercase the headers
+				// TODO
+				let req = {
+					parameters: {},
+					headers: {}
+				};
+
+				// Set Etag
+				const serverEtag = ('etag' in req.parameters) ? req.parameters.etag : '';
+				const requestEtag = ('if-none-match' in req.headers) ? req.headers['if-none-match'] : '';
+
+				// Set Modified Since
+				const serverModifiedSince = ('lastmodified' in req.parameters) ? req.parameters.lastmodified : 1;
+				const requestModifiedSince = ('if-modified-since' in req.headers) ? req.headers['if-modified-since'] : 0;
+
+				// Return value for modified or etag
+				if ( requestEtag === serverEtag || requestModifiedSince >= serverModifiedSince) {
+					status = 304;
+				}
+
 				body = (redirect) ? null : {
-					message: statusCodes[`${statusCode}`],
+					statusCode: status,
+					statusMessage: statusCodes[`${status}`],
 					requestInfo: {
 						protocol: event.requestContext.protocol,
 						method: event.requestContext.httpMethod,
