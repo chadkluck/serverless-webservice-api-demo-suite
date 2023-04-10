@@ -230,11 +230,12 @@ const processRequest = async function(event, context) {
 
 					/* this will return everything promised into an indexed array */
 					let appCompletedTasks = await Promise.all(appTasks);
-
+					let resp = appCompletedTasks[0];
+					
 					let response = {
-						statusCode: 200,
-						body: JSON.stringify(appCompletedTasks[0]),
-						headers: {'content-type': 'application/json'}
+						statusCode: resp.statusCode,
+						body: JSON.stringify(resp.body),
+						headers: resp.headers
 					};
 
 					timerMain.stop();

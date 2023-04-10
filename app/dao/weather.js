@@ -10,12 +10,15 @@ const get = async (connection) => {
 
 		const timerTaskWeather = new tools.Timer("timerTaskWeather", true);
 
+		let response = {statusCode: 200, body: null, headers: {'content-type': 'application/json'}};
+
 		try {
+
+			let body = {};
 
 			let conn = connection.toObject();
 			// conn.path = ""; // we will just use the path set in the connection details
 
-			let body = {};
 
 			if (conn.parameters.appid !== "") {
 
@@ -33,13 +36,18 @@ const get = async (connection) => {
 				body = { message: "weather api key not set" };
 			}
 
+			response.body = body;
+
 			timerTaskWeather.stop();
-			resolve( body );
+
+			resolve( response );
 			
 		} catch (error) {
 			tools.DebugAndLog.error("taskWeather CacheController error", error);
 			timerTaskWeather.stop();
-			reject( { msg: "error" } );
+			response.body = { app: 'weather', message: 'error' }
+			response.statusCode = 500;
+			reject( response );
 		};
 
 	});

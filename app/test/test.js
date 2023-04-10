@@ -32,7 +32,7 @@ function hook_stream (_stream, fn) {
 	describe('List', () => {
 
 		it('Passed Variables', async () => {
-			const getList = await root.get({requestContext: { domainName: 'www.example.com', path: '/asdf/'}});
+			const getList = (await root.get({requestContext: { domainName: 'www.example.com', path: '/asdf/'}})).body;
 
 			expect((typeof getList)).to.equal('object')
 			expect('greeting' in getList).to.be.true
@@ -54,7 +54,7 @@ describe("8 Ball", () => {
 	describe('List', () => {
 
 		it('getList is a list', async () => {
-			const getList = await ball.get('list');
+			const getList = (await ball.get('list')).body;
 
 			expect((typeof getList)).to.equal('object')
 			&& expect('list' in getList).to.be.true
@@ -77,8 +77,8 @@ describe("8 Ball", () => {
 	describe('Prediction', () => {
 
 		it('getPrediction is an object with a string', async () => {
-			const getPrediction = await ball.get('prediction');
-			const list = (await ball.get('list')).list;
+			const getPrediction = (await ball.get('prediction')).body;
+			const list = (await ball.get('list')).body.list;
 
 			expect(typeof getPrediction).to.equal('object')
 			&& expect('prediction' in getPrediction).to.be.true
@@ -100,7 +100,7 @@ describe("8 Ball", () => {
 	describe('Certainty', () => {
 
 		it('getCertainty is an object with a number', async () => {
-			const obj = await ball.get('certainty');
+			const obj = (await ball.get('certainty')).body;
 			const key = 'certainty';
 
 			expect(typeof obj).to.equal('object')
@@ -123,7 +123,7 @@ describe("8 Ball", () => {
 	describe('Lucky Numbers', () => {
 
 		it('getLuckyNumbers is an object with an array of 6 unique numbers', async () => {
-			const obj = await ball.get('luckynumbers');
+			const obj = (await ball.get('luckynumbers')).body;
 			const key = 'lucky_numbers';
 
 			expect((typeof obj)).to.equal('object')
@@ -150,7 +150,7 @@ describe("8 Ball", () => {
 	describe('Data', () => {
 
 		it('getData is an object with a prediction, lucky numbers, and certainty', async () => {
-			const obj = await ball.get('data');
+			const obj = (await ball.get('data')).body;
 
 			expect((typeof obj)).to.equal('object')
 			&& expect('prediction' in obj).to.be.true
@@ -165,7 +165,7 @@ describe("8 Ball", () => {
 		})
 
 		it('getData is default', async () => {
-			const obj = await ball.get();
+			const obj = (await ball.get()).body;
 
 			expect((typeof obj)).to.equal('object')
 			&& expect('prediction' in obj).to.be.true
@@ -191,14 +191,14 @@ describe("8 Ball", () => {
  describe("ELUNA", () => {
 
 	it('Default Greeting', async () => {
-		const obj = await eluna.get();
+		const obj = (await eluna.get()).body;
 
 		expect(Array.isArray(obj)).to.be.true
 		&& expect(obj.length).to.equal(1)
 		&& expect(obj[0]).to.equal('Hello, ELUNA!')
 	})
 	it('BAO is an array of three items', async () => {
-		const obj = await eluna.get('BAO');
+		const obj = (await eluna.get('BAO')).body;
 
 		expect(Array.isArray(obj)).to.be.true
 		&& expect(obj.length).to.equal(3)
@@ -207,7 +207,7 @@ describe("8 Ball", () => {
 		&& expect(obj[2]).to.equal('oranges')
 	})
 	it('CBL is an array of two items with Charlie and Linus', async () => {
-		const obj = await eluna.get('CBL');
+		const obj = (await eluna.get('CBL')).body;
 
 		expect(Array.isArray(obj)).to.be.true
 		&& expect(obj.length).to.equal(2)
@@ -215,7 +215,7 @@ describe("8 Ball", () => {
 		&& expect(obj[1]['name']).to.equal('Linus van Pelt')
 	})
 	it('LVP is an object with data', async () => {
-		const obj = await eluna.get('LVP');
+		const obj = (await eluna.get('LVP')).body;
 
 		expect(typeof obj).to.equal('object')
 		&& expect(obj.name).to.equal('Linus van Pelt')
@@ -223,7 +223,7 @@ describe("8 Ball", () => {
 		&& expect(obj.loans.length).to.equal(2)
 	})
 	it('CPE is an object with games', async () => {
-		const obj = await eluna.get('CPE');
+		const obj = (await eluna.get('CPE')).body;
 
 		expect(typeof obj).to.equal('object')
 		&& expect('gamechoices' in obj).to.be.true
@@ -235,21 +235,21 @@ describe("8 Ball", () => {
 		&& expect(obj.hiddengames[0]).to.equal("Tic-Tac-Toe")
 	})
 	it('DEV is an array with 1 item', async () => {
-		const obj = await eluna.get('DEV');
+		const obj = (await eluna.get('DEV')).body;
 
 		expect(Array.isArray(obj)).to.be.true
 		&& expect(obj.length).to.equal(1)
 		&& expect(obj[0]).to.equal("https://developers.exlibrisgroup.com")
 	})
 	it('DOC is an array with 1 item', async () => {
-		const obj = await eluna.get('DOC');
+		const obj = (await eluna.get('DOC')).body;
 
 		expect(Array.isArray(obj)).to.be.true
 		&& expect(obj.length).to.equal(1)
 		&& expect(obj[0]).to.equal("https://developers.exlibrisgroup.com/alma/apis/users")
 	})
 	it('LNF is an array with 3 items', async () => {
-		const obj = await eluna.get('lhf');
+		const obj = (await eluna.get('lhf')).body;
 
 		expect(Array.isArray(obj)).to.be.true
 		&& expect(obj.length).to.equal(3)
@@ -258,7 +258,7 @@ describe("8 Ball", () => {
 		&& expect(obj[2]).to.contain("https://api-na.hosted.exlibrisgroup.com/almaws/v1/users/{{user_id}}/fees?")
 	})
 	it('GIT is an array with 5 items', async () => {
-		const obj = await eluna.get('git');
+		const obj = (await eluna.get('git')).body;
 
 		expect(Array.isArray(obj)).to.be.true
 		&& expect(obj.length).to.equal(5)
@@ -267,7 +267,7 @@ describe("8 Ball", () => {
 		&& expect(obj[2]).to.contain("https://github.com/chadkluck/serverless-sam-8ball-example")
 	})
 	it('BNS is an array with 5 items', async () => {
-		const obj = await eluna.get('bns');
+		const obj = (await eluna.get('bns')).body;
 
 		expect(Array.isArray(obj)).to.be.true
 		&& expect(obj.length).to.equal(5)
@@ -276,7 +276,7 @@ describe("8 Ball", () => {
 		&& expect(obj[2]).to.contain("bibs/{{mms_id}}/holdings?format=")
 	})
 	it('8BL is an object with a string', async () =>  {
-		const obj = await eluna.get('8BL');
+		const obj = (await eluna.get('8BL')).body;
 		const list = ball.list().list;
 
 		expect(typeof obj).to.equal('object')
@@ -296,7 +296,7 @@ describe("8 Ball", () => {
 	describe("Greeting", () => {
 
 		it('getGreeting is an object with a string', async () => {
-			const obj = await games.get('greeting');
+			const obj = (await games.get('greeting')).body;
 			const key = 'greeting';
 
 			expect(typeof obj).to.equal('object')
@@ -317,7 +317,7 @@ describe("8 Ball", () => {
 	describe("Name", () => {
 
 		it('getName is an object with a string', async () => {
-			const obj = await games.get('name');
+			const obj = (await games.get('name')).body;
 			const key = 'name';
 
 			expect(typeof obj).to.equal('object')
@@ -338,7 +338,7 @@ describe("8 Ball", () => {
 	describe("Random Game", () => {
 
 		it('getGame is an object with a string that exists in the gamechoices list', async () => {
-			const obj = await games.get('random');
+			const obj = (await games.get('random')).body;
 			const key = 'game';
 			const list = games.list().gamechoices;
 
@@ -363,7 +363,7 @@ describe("8 Ball", () => {
 	describe("List", () => {
 
 		it('getList is an object with an array of games', async () => {
-			const obj = await games.get('list');
+			const obj = (await games.get('list')).body;
 
 			expect(typeof obj).to.equal('object')
 			&& expect('gamechoices' in obj).to.be.true
@@ -388,7 +388,7 @@ describe("8 Ball", () => {
 	describe("All", () => {
 
 		it('getAll is an object with gamechoices and hiddengames', async () => {
-			const obj = await games.get();
+			const obj = (await games.get()).body;
 
 			expect(typeof obj).to.equal('object')
 			&& expect('gamechoices' in obj).to.be.true
@@ -426,14 +426,14 @@ describe("8 Ball", () => {
  describe("UMWUG", () => {
 
 	it('Default Greeting', async () => {
-		const obj = await umwug.get();
+		const obj = (await umwug.get()).body;
 
 		expect(Array.isArray(obj)).to.be.true
 		&& expect(obj.length).to.equal(1)
 		&& expect(obj[0]).to.equal('Hello, UMWUG!')
 	})
 	it('BAO is an array of three items', async () => {
-		const obj = await umwug.get('BAO');
+		const obj = (await umwug.get('BAO')).body;
 
 		expect(Array.isArray(obj)).to.be.true
 		&& expect(obj.length).to.equal(3)
@@ -442,7 +442,7 @@ describe("8 Ball", () => {
 		&& expect(obj[2]).to.equal('oranges')
 	})
 	it('CBL is an array of two items with Charlie and Linus', async () => {
-		const obj = await umwug.get('CBL');
+		const obj = (await umwug.get('CBL')).body;
 
 		expect(Array.isArray(obj)).to.be.true
 		&& expect(obj.length).to.equal(2)
@@ -450,7 +450,7 @@ describe("8 Ball", () => {
 		&& expect(obj[1]['name']).to.equal('Linus van Pelt')
 	})
 	it('LVP is an object with data', async () => {
-		const obj = await umwug.get('LVP');
+		const obj = (await umwug.get('LVP')).body;
 
 		expect(typeof obj).to.equal('object')
 		&& expect(obj.name).to.equal('Linus van Pelt')
@@ -458,7 +458,7 @@ describe("8 Ball", () => {
 		&& expect(obj.loans.length).to.equal(2)
 	})
 	it('CPE is an object with games', async () => {
-		const obj = await umwug.get('CPE');
+		const obj = (await umwug.get('CPE')).body;
 
 		expect(typeof obj).to.equal('object')
 		&& expect('gamechoices' in obj).to.be.true
@@ -470,21 +470,21 @@ describe("8 Ball", () => {
 		&& expect(obj.hiddengames[0]).to.equal("Tic-Tac-Toe")
 	})
 	it('DEV is an array with 1 item', async () => {
-		const obj = await umwug.get('DEV');
+		const obj = (await umwug.get('DEV')).body;
 
 		expect(Array.isArray(obj)).to.be.true
 		&& expect(obj.length).to.equal(1)
 		&& expect(obj[0]).to.equal("https://developers.exlibrisgroup.com")
 	})
 	it('DOC is an array with 1 item', async () => {
-		const obj = await umwug.get('DOC');
+		const obj = (await umwug.get('DOC')).body;
 
 		expect(Array.isArray(obj)).to.be.true
 		&& expect(obj.length).to.equal(1)
 		&& expect(obj[0]).to.equal("https://developers.exlibrisgroup.com/alma/apis/users")
 	})
 	it('LNF is an array with 3 items', async () => {
-		const obj = await umwug.get('lhf');
+		const obj = (await umwug.get('lhf')).body;
 
 		expect(Array.isArray(obj)).to.be.true
 		&& expect(obj.length).to.equal(3)
@@ -493,7 +493,7 @@ describe("8 Ball", () => {
 		&& expect(obj[2]).to.contain("https://api-na.hosted.exlibrisgroup.com/almaws/v1/users/{{user_id}}/fees?")
 	})
 	it('GIT is an array with 5 items', async () => {
-		const obj = await umwug.get('git');
+		const obj = (await umwug.get('git')).body;
 
 		expect(Array.isArray(obj)).to.be.true
 		&& expect(obj.length).to.equal(5)
@@ -502,7 +502,7 @@ describe("8 Ball", () => {
 		&& expect(obj[2]).to.contain("https://github.com/chadkluck/serverless-sam-8ball-example")
 	})
 	it('BNS is an array with 5 items', async () => {
-		const obj = await umwug.get('bns');
+		const obj = (await umwug.get('bns')).body;
 
 		expect(Array.isArray(obj)).to.be.true
 		&& expect(obj.length).to.equal(5)

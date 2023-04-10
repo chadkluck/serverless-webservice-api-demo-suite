@@ -101,20 +101,23 @@ const get = async (event) => {
 
 	return new Promise(async (resolve, reject) => {
 
+		let response = {statusCode: 200, body: null, headers: {'content-type': 'application/json'}};
+
         try {
-			console.log("ROOT EVENT", event);
 			const domain = event.requestContext.domainName;
 			const path = '/' + event.requestContext.path.replace(/^\/|\/$/g, '');
 
-			const domainRegEx = new RegExp('/{{domain}}/', 'gi');
-			const pathRegEx = new RegExp('/{{path}}/', 'gi');
+			const domainRegEx = new RegExp('{{domain}}', 'gi');
+			const pathRegEx = new RegExp('{{path}}', 'gi');
 
-			let body = JSON.parse((JSON.stringify(data)).replace(domainRegEx, domain).replace(pathRegEx, path));
-            resolve( body );
+			response.body = JSON.parse((JSON.stringify(data)).replace(domainRegEx, domain).replace(pathRegEx, path));
+
+            resolve( response );
                 
         } catch (error) {
-			console.log("Error", error);
-            reject( { msg: "error" } );
+			response.body = { app: 'root', message: 'error' }
+			response.statusCode = 500;
+			reject( response );
         };
 
     });

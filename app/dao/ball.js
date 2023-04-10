@@ -86,9 +86,11 @@ const get = async (code = null) => {
 
 	return new Promise(async (resolve, reject) => {
 
-		let body = null;
+		let response = {statusCode: 200, body: null, headers: {'content-type': 'application/json'}};
 
 		try {
+
+			let body = null;
 
 			code = (code === null || code === '' || typeof code !== 'string') ? 'data' : code.toLowerCase();
 
@@ -110,10 +112,14 @@ const get = async (code = null) => {
 					break;
 			}
 
-			resolve( body );
+			response.body = body;
+
+			resolve( response );
 			
 		} catch (error) {
-			reject( { msg: "error" } );
+			response.body = { app: 'ball', message: 'error' }
+			response.statusCode = 500;
+			reject( response );
 		};
 
 	});
