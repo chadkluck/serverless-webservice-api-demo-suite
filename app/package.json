@@ -10,13 +10,13 @@
 		"node": "*"
 	},
 	"directories": {
-	  "test": "test"
+		"test": "test"
 	},
 	"scripts": {
 		"test": "mocha"
 	},
 	"dependencies": {
-		"@chadkluck/cache-data": "^1.0.18"
+		"@chadkluck/cache-data": "^1.0.19"
 	},
 	"devDependencies": {
 		"aws-sdk": "^2.1211.0",
