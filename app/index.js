@@ -24,7 +24,7 @@ For other notes and info, refer to README.md
 "use strict";
 
 const { tools } = require('@chadkluck/cache-data');
-const { ball, eluna, umwug, games, weather, test, root, echo } = require('./dao/index.js');
+const { root, ball, games, eluna, umwug, echo, weather } = require('./dao/index.js');
 const obj = require("./classes.js");
 
 /* increase the log level - comment out when not needed  */
@@ -203,17 +203,14 @@ const processRequest = async function(event, context) {
 						case 'ball':
 							appTasks.push(ball.get(code));
 							break;
-						case 'eluna':
-							appTasks.push(eluna.get(code));
-							break;
 						case 'games':
 							appTasks.push(games.get(code));
 							break;
+						case 'eluna':
+							appTasks.push(eluna.get(code));
+							break;
 						case 'umwug':
 							appTasks.push(umwug.get(code));
-							break;
-						case 'test':
-							appTasks.push(test.get(event));
 							break;
 						case 'echo':
 							appTasks.push(echo.get(event));

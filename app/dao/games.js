@@ -24,7 +24,7 @@ const hiddengames = [ "Tic-Tac-Toe" ];
  * @returns {{greeting: string}} A greeting string
  */
 const greeting = function () {
-	return { greeting: 'Would you like to play a game?'};
+	return { greeting: 'Shall we play a game?'};
 };
 
 /**

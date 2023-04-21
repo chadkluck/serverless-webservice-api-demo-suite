@@ -90,9 +90,9 @@ const get = async (event) => {
 						path: event.requestContext.path,
 						headers: event.headers,
 						parameters: ("queryStringParameters" in event) ? event.queryStringParameters : {},
-						body: ("body" in event) ? event.body : null,
 						ip: event.requestContext.identity.sourceIp,
-						userAgent: event.requestContext.identity.userAgent						
+						userAgent: event.requestContext.identity.userAgent,
+						body: ("body" in event) ? event.body : null						
 					}
 				};
 

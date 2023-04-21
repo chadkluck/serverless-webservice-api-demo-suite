@@ -8,6 +8,49 @@ Transform:
 Description: "demo-web-service: Web Service as a template"
 
 # =============================================================================
+# META DATA
+# -----------------------------------------------------------------------------
+# https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-cloudformation-interface.html
+# 
+
+Metadata:
+  AWS::CloudFormation::Interface:
+    ParameterGroups:
+      -
+        Label:
+          default: "ProjectStack/CodeStar Deploy Environment Parameters"
+        Parameters:
+          - ProjectId
+          - ProjectStageId
+          - Prefix
+          - DeployStage
+          - DeployEnvironment
+          - DeployRole
+          - ParameterStoreAppPath
+          - AlarmNotificationEmail
+      -
+        Label:
+          default: "Web Service Application Parameters"
+        Parameters:
+          - ApiPathBase
+          - DbMaxCacheSizeInKB
+          - CryptIdHashAlgorithm
+          - CryptSecureDataAlg
+          - ErrorExpirationInSeconds
+          - PurgeExpiredCacheEntriesInHours
+          - PurgeAgeOfCachedBucketObjInDays
+          - UserAgent
+          - LogRetentionInDaysForPROD
+          - LogRetentionInDaysForDEVTEST
+      -
+        Label:
+          default: "Lambda Function Settings"
+        Parameters:
+          - FunctionTimeOutInSeconds
+          - FunctionMaxMemoryInMB
+          - FunctionGradualDeploymentType
+
+# =============================================================================
 # PARAMETERS
 # -----------------------------------------------------------------------------
 # https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/parameters-section-structure.html
@@ -66,7 +109,7 @@ Parameters:
     ConstraintDescription: 'A valid email must be used to receive alarm notifications'
 
   # ---------------------------------------------------------------------------
-  # Application Parameters
+  # Web Service Application Parameters
 
   ApiPathBase:
     Type: String
@@ -173,7 +216,7 @@ Parameters:
       - 3653
 
   # ---------------------------------------------------------------------------
-  # Lambda App Settings
+  # Lambda Function Settings
 
   FunctionTimeOutInSeconds:
     Type: Number

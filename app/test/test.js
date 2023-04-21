@@ -301,7 +301,7 @@ describe("8 Ball", () => {
 
 			expect(typeof obj).to.equal('object')
 			&& expect(key in obj).to.be.true
-			&& expect(obj[key]).to.equal('Would you like to play a game?')
+			&& expect(obj[key]).to.equal('Shall we play a game?')
 		})
 		it('greeting is an object with a string', () => {
 			const obj = games.greeting();
@@ -309,7 +309,7 @@ describe("8 Ball", () => {
 
 			expect(typeof obj).to.equal('object')
 			&& expect(key in obj).to.be.true
-			&& expect(obj[key]).to.equal('Would you like to play a game?')
+			&& expect(obj[key]).to.equal('Shall we play a game?')
 		})
 
 	});
