@@ -88,6 +88,23 @@ const titleCaseKebabKeys = function (objectWithKeys) {
 	return objectWithNewKeys;
 };
 
+/**
+ * 
+ */
+const getStatusCode = function (statusCode) {
+	let obj = {statusCode: 200, message: "" };
+
+	if ( `${statusCode}` in statusCodes ) {
+		obj.statusCode = parseInt(statusCode, 10);
+		obj.message = statusCodes[`${statusCode}`];
+	} else {
+		obj.statusCode = statusError.statusCode;
+		obj.message = statusError.body.replace('{{STATUS}}', statusCode);
+	}
+
+	return obj;
+};
+
 const get = async (event) => {
 
 	return new Promise(async (resolve, reject) => {
@@ -99,25 +116,28 @@ const get = async (event) => {
 			console.log("EVENT", event);
 
 			let eventHeaders = lowerCaseKeys(event.headers);
-			let eventParameteters = lowerCaseKeys(event.queryStringParameters);
+			let eventParameters = lowerCaseKeys(event.queryStringParameters);
 					
-			let statusCode = ("status" in eventParameteters) ? parseInt(eventParameteters['status'], 10) : 200;
+			if ("status" in eventParameters) {
+				const obj = getStatusCode(eventParameters.status);
+				response.statusCode = obj.statusCode;
 
-			if ( !(`${statusCode}` in statusCodes) ) {
-				response.statusCode = statusError.statusCode;
-				response.body = { message: statusError.body.replace('{{STATUS}}', statusCode) };
+				if (response.statusCode === 301 || response.statusCode === 302) {
+					response.headers = { Location: "https://api.chadkluck.net/games" };
+				} else {
+					response.body = { message: `${obj.statusCode} ${obj.message}` };
+				}
 			} else {
-				const redirect = (statusCode === 301 || statusCode === 302) ? "https://api.chadkluck.net/games" : "";
 				let body = null;
-				let headers = ( redirect ) ? { Location: redirect } : { "Content-Type": "application/json" };
-				let status = statusCode;
+				let status = 200;
+				let headers = {};
 
 				// Set Etag
-				const serverEtag = ('etag' in eventParameteters) ? eventParameteters.etag : '';
+				const serverEtag = ('etag' in eventParameters) ? eventParameters.etag : '';
 				const requestEtag = ('if-none-match' in eventHeaders) ? eventHeaders['if-none-match'] : '';
 
 				// Set Modified Since
-				const serverModifiedSince = ('lastmodified' in eventParameteters) ? eventParameteters.lastmodified : 1;
+				const serverModifiedSince = ('lastmodified' in eventParameters) ? eventParameters.lastmodified : 1;
 				const requestModifiedSince = ('if-modified-since' in eventHeaders) ? eventHeaders['if-modified-since'] : 0;
 
 				// Return value for modified or etag
@@ -125,7 +145,7 @@ const get = async (event) => {
 					status = 304;
 				}
 
-				body = (redirect) ? null : {
+				body = (status !== 200) ? null : {
 					statusCode: status,
 					statusMessage: statusCodes[`${status}`],
 					requestInfo: {
@@ -161,5 +181,7 @@ const get = async (event) => {
 };
 
 module.exports = {
+	statusCodes,
+	getStatusCode,
 	get
 };
