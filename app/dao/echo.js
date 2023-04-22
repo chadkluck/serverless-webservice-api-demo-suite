@@ -101,9 +101,7 @@ const get = async (event) => {
 			let eventHeaders = lowerCaseKeys(event.headers);
 			let eventParameteters = lowerCaseKeys(event.queryStringParameters);
 					
-			let statusCode = ("statuscode" in eventParameteters) ? parseInt(eventParameteters['statuscode'], 10) : 200;
-
-			console.log("StatusCode: "+statusCode);
+			let statusCode = ("status" in eventParameteters) ? parseInt(eventParameteters['status'], 10) : 200;
 
 			if ( !(`${statusCode}` in statusCodes) ) {
 				response.statusCode = statusError.statusCode;
@@ -123,7 +121,7 @@ const get = async (event) => {
 				const requestModifiedSince = ('if-modified-since' in eventHeaders) ? eventHeaders['if-modified-since'] : 0;
 
 				// Return value for modified or etag
-				if ( requestEtag === serverEtag || requestModifiedSince >= serverModifiedSince) {
+				if ( requestEtag !== '' && (requestEtag === serverEtag || requestModifiedSince >= serverModifiedSince)) {
 					status = 304;
 				}
 
@@ -139,8 +137,9 @@ const get = async (event) => {
 						parameters: ("queryStringParameters" in event) ? event.queryStringParameters : {},
 						ip: event.requestContext.identity.sourceIp,
 						userAgent: event.requestContext.identity.userAgent,
-						body: ("body" in event) ? event.body : null						
-					}
+						body: ("body" in event) ? event.body : null,
+					},
+					event
 				};
 
 				response.statusCode = status;
