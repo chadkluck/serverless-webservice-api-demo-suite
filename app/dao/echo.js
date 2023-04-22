@@ -41,15 +41,69 @@ const statusCodes = {
     '505': 'HTTP Version not supported'
 };
 
+/**
+ * Returns an object with lowercase keys. Note that if after
+ * lowercasing the keys there is a collision one will be
+ * over-written.
+ * Can be used for headers, response, or more.
+ * @param {Object} objectWithKeys 
+ * @returns {Object} Same object but with lowercase keys
+ */
+const lowerCaseKeys = function (objectWithKeys) {
+	let objectWithLowerCaseKeys = {};
+	if ( objectWithKeys !== null ) {
+		let keys = Object.keys(objectWithKeys); 
+		// move each value from objectWithKeys to objectWithLowerCaseKeys
+		keys.forEach( function( k ) { 
+			objectWithLowerCaseKeys[k.toLowerCase()] = objectWithKeys[k]; 
+		});            
+	}
+	return objectWithLowerCaseKeys;
+};
+
+/**
+ * Returns an object with Camel Case keys. Note that if after
+ * changing the keys there is a collision one will be
+ * over-written.
+ * Can be used for headers, response, or more.
+ * @param {Object} objectWithKeys 
+ * @returns {Object} Same object but with lowercase keys
+ */
+const titleCaseKebabKeys = function (objectWithKeys) {
+
+	const toTitleCaseKebab = function (str) {
+		return str.toLowerCase().split('-').map(function (word) {
+			return (word.charAt(0).toUpperCase() + word.slice(1));
+		}).join('-');
+	};
+
+	let objectWithNewKeys = {};
+	if ( objectWithKeys !== null ) {
+		let keys = Object.keys(objectWithKeys); 
+		// move each value from objectWithKeys to objectWithLowerCaseKeys
+		keys.forEach( function( k ) { 
+			objectWithNewKeys[toTitleCaseKebab(k)] = objectWithKeys[k]; 
+		});            
+	}
+	return objectWithNewKeys;
+};
+
 const get = async (event) => {
 
 	return new Promise(async (resolve, reject) => {
 
-		let response = {statusCode: 200, body: null, headers: {'content-type': 'application/json'}};
+		let response = {statusCode: 200, body: null, headers: {'Content-Type': 'application/json'}};
 
 		try {
+
+			console.log("EVENT", event);
+
+			let eventHeaders = lowerCaseKeys(event.headers);
+			let eventParameteters = lowerCaseKeys(event.queryStringParameters);
 					
-			const statusCode = ("X-StatusCode" in event.headers) ? parseInt(event.headers['X-StatusCode'], 10) : 200;
+			let statusCode = ("statuscode" in eventParameteters) ? parseInt(eventParameteters['statuscode'], 10) : 200;
+
+			console.log("StatusCode: "+statusCode);
 
 			if ( !(`${statusCode}` in statusCodes) ) {
 				response.statusCode = statusError.statusCode;
@@ -57,23 +111,16 @@ const get = async (event) => {
 			} else {
 				const redirect = (statusCode === 301 || statusCode === 302) ? "https://api.chadkluck.net/games" : "";
 				let body = null;
-				let headers = ( redirect ) ? {Location: redirect } : { "Content-Type": "application/json" };
+				let headers = ( redirect ) ? { Location: redirect } : { "Content-Type": "application/json" };
 				let status = statusCode;
 
-				// lowercase the headers
-				// TODO
-				let req = {
-					parameters: {},
-					headers: {}
-				};
-
 				// Set Etag
-				const serverEtag = ('etag' in req.parameters) ? req.parameters.etag : '';
-				const requestEtag = ('if-none-match' in req.headers) ? req.headers['if-none-match'] : '';
+				const serverEtag = ('etag' in eventParameteters) ? eventParameteters.etag : '';
+				const requestEtag = ('if-none-match' in eventHeaders) ? eventHeaders['if-none-match'] : '';
 
 				// Set Modified Since
-				const serverModifiedSince = ('lastmodified' in req.parameters) ? req.parameters.lastmodified : 1;
-				const requestModifiedSince = ('if-modified-since' in req.headers) ? req.headers['if-modified-since'] : 0;
+				const serverModifiedSince = ('lastmodified' in eventParameteters) ? eventParameteters.lastmodified : 1;
+				const requestModifiedSince = ('if-modified-since' in eventHeaders) ? eventHeaders['if-modified-since'] : 0;
 
 				// Return value for modified or etag
 				if ( requestEtag === serverEtag || requestModifiedSince >= serverModifiedSince) {
@@ -98,7 +145,7 @@ const get = async (event) => {
 
 				response.statusCode = status;
 				response.body = body;
-				response.headers = headers;
+				response.headers = titleCaseKebabKeys(headers);
 				
 			}
 
