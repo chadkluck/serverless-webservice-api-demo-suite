@@ -145,21 +145,34 @@ const get = async (event) => {
 					status = 304;
 				}
 
-				body = (status !== 200) ? null : {
-					statusCode: status,
-					statusMessage: statusCodes[`${status}`],
-					requestInfo: {
-						protocol: event.requestContext.protocol,
-						method: event.requestContext.httpMethod,
-						host: event.requestContext.domainName,
-						path: event.requestContext.path,
-						headers: event.headers,
-						parameters: ("queryStringParameters" in event) ? event.queryStringParameters : {},
-						ip: event.requestContext.identity.sourceIp,
-						userAgent: event.requestContext.identity.userAgent,
-						body: ("body" in event) ? event.body : null,
-					},
-					event
+				if (status === 200) {
+
+					// if a body was sent without an explicit body=false in query string
+					if ("body" in event && event.body !== null && ('body' in eventParameters && eventParameters.body.toLowerCase() !== "false")) {
+						try {
+							body = JSON.parse(event.body); // JSON
+						} catch (e) {
+							body = event.body; // TEXT
+							headers['Content-Type'] = "text/html";
+						}
+					} else {
+						body = {
+							statusCode: status,
+							statusMessage: statusCodes[`${status}`],
+							requestInfo: {
+								protocol: event.requestContext.protocol,
+								method: event.requestContext.httpMethod,
+								host: event.requestContext.domainName,
+								path: event.requestContext.path,
+								headers: event.headers,
+								parameters: ("queryStringParameters" in event) ? event.queryStringParameters : {},
+								ip: event.requestContext.identity.sourceIp,
+								userAgent: event.requestContext.identity.userAgent,
+								body: ("body" in event) ? event.body : null
+							}
+						};
+
+					}
 				};
 
 				response.statusCode = status;
