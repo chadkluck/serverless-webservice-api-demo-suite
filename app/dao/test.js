@@ -43,20 +43,34 @@ const getEmployeeById = function (id) {
     data.employees.find(isEmployee);
 }
 
-const get = function(event) {
+const get = async (event) => {
 
-    let data = null;
-    
-    let eventParameters = tools.lowerCaseKeys(event.queryStringParameters);
+    return new Promise(async (resolve, reject) => {
 
-    // Add your own logic for test data
-    if ("data" in eventParameters && eventParameters.data === "employee") {
-        if ("id" in eventParameters) {
-            data = getEmployeeById(eventParameters.id);
-        };
-    }
+		let response = {statusCode: 200, body: null, headers: {'Content-Type': 'application/json'}};
 
-    return data;
+		try {
+            let data = null;
+            
+            let eventParameters = tools.lowerCaseKeys(event.queryStringParameters);
+
+            // Add your own logic for test data
+            if ("data" in eventParameters && eventParameters.data === "employee") {
+                if ("id" in eventParameters) {
+                    data = getEmployeeById(eventParameters.id);
+                };
+            }
+
+            response.body = data;
+
+            resolve( response );
+
+        } catch (error) {
+            response.body = { app: 'test', message: 'error' }
+			response.statusCode = 500;
+            reject( response );
+        }
+    });
 
 };
 
