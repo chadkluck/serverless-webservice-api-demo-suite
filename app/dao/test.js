@@ -35,13 +35,46 @@ data.employees = [
     },
 ];
 
+data.books = [
+    {
+        title: "Hello, World",
+        author: "Jane Doe",
+        id: "1234567-001",
+        isbn: "1000000001",
+        year: "2019"
+    },
+    {
+        title: "Golden Sun",
+        author: "Jane Doe",
+        id: "1234567-002",
+        isbn: "1000000002",
+        year: "2022"
+    }
+];
+
 const getEmployeeById = function (id) {
     function isEmployee(employee) {
         return employee.id === id;
     };
 
     data.employees.find(isEmployee);
-}
+};
+
+const getBookById = function (id) {
+    function isBook(book) {
+        return book.id === id;
+    };
+
+    data.books.find(isBook);
+};
+
+const getBookByISBN = function (isbn) {
+    function isBook(book) {
+        return book.isbn === isbn;
+    };
+
+    data.books.find(isBook);
+};
 
 const get = async (event) => {
 
@@ -54,11 +87,24 @@ const get = async (event) => {
             
             let eventParameters = tools.lowerCaseKeys(event.queryStringParameters);
 
-            // Add your own logic for test data
-            if ("data" in eventParameters && eventParameters.data === "employee") {
-                if ("id" in eventParameters) {
-                    data = getEmployeeById(eventParameters.id);
-                };
+            // Add your own logic for test data - it doesn't need to be clean - quick and dirty but stable gets the job done
+            if ("data" in eventParameters) {
+                switch (eventParameters.data) {
+                    case "employees":
+                        if ("id" in eventParameters) {
+                            data = getEmployeeById(eventParameters.id);
+                        };                    
+                        break;
+                    case "books":
+                        if ("id" in eventParameters) {
+                            data = getBookById(eventParameters.id);
+                        } else if ("isbn" in eventParameters) {
+                            data = getBookByISBN(eventParameters.isbn);
+                        }
+                        break;
+                    default:
+                        break;
+                }
             }
 
             response.body = data;
