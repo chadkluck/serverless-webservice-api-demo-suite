@@ -78,7 +78,15 @@ const data = {
 			description: '',
 			method: 'GET',
 			domain: '{{domain}}',
-			path: '{{path}}/test'
+			path: '{{path}}/test',
+			examples: [
+				'https://{{domain}}{{path}}/test',
+				'https://{{domain}}{{path}}/test?data=books',
+				'https://{{domain}}{{path}}/test?data=books&id=1234567-001',
+				'https://{{domain}}{{path}}/test?data=books&isbn=1000000002',
+				'https://{{domain}}{{path}}/test?data=employees',
+				'https://{{domain}}{{path}}/test?data=employees&id=100000005'
+			]
 		},
 		{
 			name: 'Echo',
