@@ -110,6 +110,8 @@ const get = async (event) => {
                         data = testData;
                         break;
                 }
+            } else {
+                data = testData;
             }
 
             response.body = data;
