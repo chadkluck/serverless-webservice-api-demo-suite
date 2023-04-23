@@ -137,6 +137,8 @@ const get = async (event) => {
 				
 			}
 
+			console.log("ECHO RESPONSE", response);
+
 			resolve( response );
 					
 		} catch (error) {
