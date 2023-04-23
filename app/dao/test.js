@@ -1,3 +1,5 @@
+const tools = require("../utils/tools.js");
+
 const data = {};
 
 data.employees = [
@@ -45,7 +47,7 @@ const get = function(event) {
 
     let data = null;
     
-    let eventParameters = lowerCaseKeys(event.queryStringParameters);
+    let eventParameters = tools.lowerCaseKeys(event.queryStringParameters);
 
     // Add your own logic for test data
     if ("data" in eventParameters && eventParameters.data === "employee") {

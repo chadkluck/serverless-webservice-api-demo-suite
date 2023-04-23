@@ -1,3 +1,5 @@
+const tools = require("../utils/tools.js");
+
 const statusError = { status: 406, body: "I'm sorry, Dave, I'm afraid {{STATUS}} isn't a valid status code" };
 
 const statusCodes = {
@@ -41,52 +43,6 @@ const statusCodes = {
     '505': 'HTTP Version not supported'
 };
 
-/**
- * Returns an object with lowercase keys. Note that if after
- * lowercasing the keys there is a collision one will be
- * over-written.
- * Can be used for headers, response, or more.
- * @param {Object} objectWithKeys 
- * @returns {Object} Same object but with lowercase keys
- */
-const lowerCaseKeys = function (objectWithKeys) {
-	let objectWithLowerCaseKeys = {};
-	if ( objectWithKeys !== null ) {
-		let keys = Object.keys(objectWithKeys); 
-		// move each value from objectWithKeys to objectWithLowerCaseKeys
-		keys.forEach( function( k ) { 
-			objectWithLowerCaseKeys[k.toLowerCase()] = objectWithKeys[k]; 
-		});            
-	}
-	return objectWithLowerCaseKeys;
-};
-
-/**
- * Returns an object with Camel Case keys. Note that if after
- * changing the keys there is a collision one will be
- * over-written.
- * Can be used for headers, response, or more.
- * @param {Object} objectWithKeys 
- * @returns {Object} Same object but with lowercase keys
- */
-const titleCaseKebabKeys = function (objectWithKeys) {
-
-	const toTitleCaseKebab = function (str) {
-		return str.toLowerCase().split('-').map(function (word) {
-			return (word.charAt(0).toUpperCase() + word.slice(1));
-		}).join('-');
-	};
-
-	let objectWithNewKeys = {};
-	if ( objectWithKeys !== null ) {
-		let keys = Object.keys(objectWithKeys); 
-		// move each value from objectWithKeys to objectWithLowerCaseKeys
-		keys.forEach( function( k ) { 
-			objectWithNewKeys[toTitleCaseKebab(k)] = objectWithKeys[k]; 
-		});            
-	}
-	return objectWithNewKeys;
-};
 
 /**
  * 
@@ -115,8 +71,8 @@ const get = async (event) => {
 
 			console.log("EVENT", event);
 
-			let eventHeaders = lowerCaseKeys(event.headers);
-			let eventParameters = lowerCaseKeys(event.queryStringParameters);
+			let eventHeaders = tools.lowerCaseKeys(event.headers);
+			let eventParameters = tools.lowerCaseKeys(event.queryStringParameters);
 					
 			if ("status" in eventParameters) {
 				const obj = getStatusCode(eventParameters.status);
@@ -177,7 +133,7 @@ const get = async (event) => {
 
 				response.statusCode = status;
 				response.body = body;
-				response.headers = titleCaseKebabKeys(headers);
+				response.headers = tools.titleCaseKebabKeys(headers);
 				
 			}
 
