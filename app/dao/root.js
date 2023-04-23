@@ -74,13 +74,6 @@ const data = {
 			]
 		},
 		{
-			name: 'Weather',
-			description: '',
-			method: 'GET',
-			domain: '{{domain}}',
-			path: '{{path}}/weather'
-		},
-		{
 			name: 'Test',
 			description: '',
 			method: 'GET',
@@ -93,6 +86,13 @@ const data = {
 			method: 'GET',
 			domain: '{{domain}}',
 			path: '{{path}}/echo'
+		},
+		{
+			name: 'Weather',
+			description: '',
+			method: 'GET',
+			domain: '{{domain}}',
+			path: '{{path}}/weather'
 		}
 	]
 };

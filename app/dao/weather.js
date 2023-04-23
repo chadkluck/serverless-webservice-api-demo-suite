@@ -4,7 +4,7 @@ const { tools, cache, endpoint } = require('@chadkluck/cache-data');
  * Connects to an external weather api and retrieves weather information
  * @returns {Response} weather information
  */
-const get = async (connection) => {
+const get = async (connection, event) => {
 
 	return new Promise(async (resolve, reject) => {
 
