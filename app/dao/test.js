@@ -49,6 +49,13 @@ testData.books = [
         id: "1234567-002",
         isbn: "1000000002",
         year: "2022"
+    },
+    {
+        title: "I Think, Therefore I Am: A Collection of My Thoughts",
+        author: "Chad Leigh Kluck",
+        id: "1234567-003",
+        isbn: "1000000003",
+        year: "2001"
     }
 ];
 
@@ -57,7 +64,7 @@ const getEmployeeById = function (id) {
         return employee.id === id;
     };
 
-    testData.employees.find(isEmployee);
+    return testData.employees.find(isEmployee);
 };
 
 const getBookById = function (id) {
@@ -65,7 +72,7 @@ const getBookById = function (id) {
         return book.id === id;
     };
 
-    testData.books.find(isBook);
+    return testData.books.find(isBook);
 };
 
 const getBookByISBN = function (isbn) {
@@ -73,7 +80,7 @@ const getBookByISBN = function (isbn) {
         return book.isbn === isbn;
     };
 
-    testData.books.find(isBook);
+    return testData.books.find(isBook);
 };
 
 const get = async (event) => {
