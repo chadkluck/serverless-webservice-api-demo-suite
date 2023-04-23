@@ -14,5 +14,6 @@ module.exports = {
 	eluna,
 	umwug,
 	echo,
+	test,
 	weather
 };

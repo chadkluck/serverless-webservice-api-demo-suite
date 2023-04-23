@@ -47,9 +47,12 @@ const get = function(event) {
     
     let eventParameters = lowerCaseKeys(event.queryStringParameters);
 
-    if ("id" in eventParameters) {
-        data = getEmployeeById(eventParameters.id);
-    };
+    // Add your own logic for test data
+    if ("data" in eventParameters && eventParameters.data === "employee") {
+        if ("id" in eventParameters) {
+            data = getEmployeeById(eventParameters.id);
+        };
+    }
 
     return data;
 

@@ -148,7 +148,7 @@ const get = async (event) => {
 				if (status === 200) {
 
 					// if a body was sent without an explicit body=false in query string then we echo the body
-					if ("body" in event && event.body !== null && !('body' in eventParameters && eventParameters.body.toLowerCase() === "true")) {
+					if ("body" in event && event.body !== null && !('body' in eventParameters && eventParameters.body.toLowerCase() === "false")) {
 						try {
 							body = JSON.parse(event.body); // JSON
 						} catch (e) {
