@@ -1,8 +1,8 @@
 const tools = require("../utils/tools.js");
 
-const data = {};
+const testData = {};
 
-data.employees = [
+testData.employees = [
     {
         name: "John Doe",
         id: "100000001",
@@ -35,7 +35,7 @@ data.employees = [
     },
 ];
 
-data.books = [
+testData.books = [
     {
         title: "Hello, World",
         author: "Jane Doe",
@@ -57,7 +57,7 @@ const getEmployeeById = function (id) {
         return employee.id === id;
     };
 
-    data.employees.find(isEmployee);
+    testData.employees.find(isEmployee);
 };
 
 const getBookById = function (id) {
@@ -65,7 +65,7 @@ const getBookById = function (id) {
         return book.id === id;
     };
 
-    data.books.find(isBook);
+    testData.books.find(isBook);
 };
 
 const getBookByISBN = function (isbn) {
@@ -73,7 +73,7 @@ const getBookByISBN = function (isbn) {
         return book.isbn === isbn;
     };
 
-    data.books.find(isBook);
+    testData.books.find(isBook);
 };
 
 const get = async (event) => {
@@ -93,16 +93,21 @@ const get = async (event) => {
                     case "employees":
                         if ("id" in eventParameters) {
                             data = getEmployeeById(eventParameters.id);
-                        };                    
+                        } else {
+                            data = testData.employees;
+                        };                  
                         break;
                     case "books":
                         if ("id" in eventParameters) {
                             data = getBookById(eventParameters.id);
                         } else if ("isbn" in eventParameters) {
                             data = getBookByISBN(eventParameters.isbn);
+                        } else {
+                            data = testData.books;
                         }
                         break;
                     default:
+                        data = testData;
                         break;
                 }
             }
