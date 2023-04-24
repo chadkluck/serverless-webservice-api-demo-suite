@@ -632,4 +632,8 @@ describe("Echo", () => {
 		})
 	});
 
+	// add last modified and etag checks
+
+	// add body checks with false flag
+
 });
