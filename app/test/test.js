@@ -573,7 +573,7 @@ describe("Echo", () => {
 
 		it('Status Request 418', async () => {
 
-			const myEvent = JSON.parse(JSON.stringify(event));
+			const myEvent = {...event}// clone //JSON.parse(JSON.stringify(event));
 			myEvent.queryStringParameters = { status: 418 };
 
 			const obj = (await echo.get(myEvent));
