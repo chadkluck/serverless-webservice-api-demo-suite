@@ -1,5 +1,5 @@
 
-const { root, ball, eluna, umwug, games, weather, test } = require('../dao/index.js');
+const { root, ball, eluna, umwug, games, echo, test, weather } = require('../dao/index.js');
 
 const chai = require("chai")
 const expect = chai.expect
@@ -423,7 +423,7 @@ describe("8 Ball", () => {
  */
 
 
- describe("UMWUG", () => {
+describe("UMWUG", () => {
 
 	it('Default Greeting', async () => {
 		const obj = (await umwug.get()).body;
@@ -510,5 +510,126 @@ describe("8 Ball", () => {
 		&& expect(obj[1]).to.contain("bibs/?view=full&expand=p_avail,e_avail")
 		&& expect(obj[2]).to.contain("bibs/{{mms_id}}/holdings?format=")
 	})
+
+});
+
+/* ****************************************************************************
+ *	ECHO
+ */
+
+
+describe("Echo", () => {
+	const event = {
+		resource: '/{id}',
+		path: '/echo',
+		httpMethod: 'GET',
+		headers: {
+			'CloudFront-Viewer-Country': 'US',
+			Host: 'abcdef1234.execute-api.us-east-2.amazonaws.com',
+			'User-Agent': 'PostmanRuntime/7.31.3',
+			'X-Test': 'true'
+		},
+		multiValueHeaders: {
+			'CloudFront-Viewer-Country': [ 'US' ],
+			Host: [ 'abcdef1234.execute-api.us-east-2.amazonaws.com' ],
+			'User-Agent': [ 'PostmanRuntime/7.31.3' ],
+			'X-Test': [ 'true' ]
+		},
+		queryStringParameters: null,
+		multiValueQueryStringParameters: null,
+		pathParameters: { id: 'echo' },
+		requestContext: {
+			resourceId: 'uuqygl',
+			resourcePath: '/{id}',
+			httpMethod: 'GET',
+			path: '/demo-test/echo',
+			protocol: 'HTTP/1.1',
+			domainPrefix: 'abcdef1234',
+			identity: {
+				sourceIp: '10.0.0.39',
+				userAgent: 'PostmanRuntime/7.31.3',
+			},
+			domainName: 'abcdef1234.execute-api.us-east-2.amazonaws.com',
+			apiId: 'abcdef1234'
+		},
+		body: null,
+		isBase64Encoded: false
+	};
+
+	it('Default', async () => {
+
+		const obj = (await echo.get(event));
+
+		expect(typeof obj).to.equal('object')
+		&& expect(obj.statusCode).to.equal(200)
+		&& expect(obj.headers['Content-Type']).to.equal('application/json')
+		&& expect(typeof obj.body).to.equal('object')
+		&& expect(obj.body.statusCode).to.equal(200)
+		&& expect(obj.body.requestInfo.protocol).to.equal('HTTP/1.1')
+
+	})
+
+	describe("Status Requests", () => {
+
+		it('Status Request 418', async () => {
+
+			const myEvent = JSON.parse(JSON.stringify(event));
+			myEvent.queryStringParameters = { status: 418 };
+
+			const obj = (await echo.get(myEvent));
+
+			expect(obj.statusCode).to.equal(418)
+			&& expect(obj.body.message).to.equal('418 I\'m a teapot')
+
+		})
+
+		it('Status Request 505', async () => {
+
+			const myEvent = JSON.parse(JSON.stringify(event));
+			myEvent.queryStringParameters = { status: 505 };
+
+			const obj = (await echo.get(myEvent));
+
+			expect(obj.statusCode).to.equal(505)
+			&& expect(obj.body.message).to.equal('505 HTTP Version not supported')
+
+		})
+
+		it('Status Request 700 - Bad Request (406)', async () => {
+
+			const myEvent = JSON.parse(JSON.stringify(event));
+			myEvent.queryStringParameters = { status: 700 };
+
+			const obj = (await echo.get(myEvent));
+
+			expect(obj.statusCode).to.equal(406)
+			&& expect(obj.body.message).to.equal('406 I\'m sorry, Dave, I\'m afraid 700 isn\'t a valid status code')
+
+		})
+
+		it('Status Request 301 - Redirect', async () => {
+
+			const myEvent = JSON.parse(JSON.stringify(event));
+			myEvent.queryStringParameters = { status: 301 };
+
+			const obj = (await echo.get(myEvent));
+
+			expect(obj.statusCode).to.equal(301)
+			expect(obj.headers.Location).to.equal('https://api.chadkluck.net/games')
+
+		})
+
+		it('Status Request 302 - Redirect', async () => {
+
+			const myEvent = JSON.parse(JSON.stringify(event));
+			myEvent.queryStringParameters = { status: 302 };
+
+			const obj = (await echo.get(myEvent));
+
+			expect(obj.statusCode).to.equal(302)
+			expect(obj.headers.Location).to.equal('https://api.chadkluck.net/games')
+
+		})
+	});
 
 });

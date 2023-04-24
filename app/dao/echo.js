@@ -1,6 +1,6 @@
 const tools = require("../utils/tools.js");
 
-const statusError = { status: 406, body: "I'm sorry, Dave, I'm afraid {{STATUS}} isn't a valid status code" };
+const statusError = { statusCode: 406, body: "I'm sorry, Dave, I'm afraid {{STATUS}} isn't a valid status code" };
 
 const statusCodes = {
     '100': 'Continue',
@@ -69,8 +69,6 @@ const get = async (event) => {
 
 		try {
 
-			console.log("EVENT", event);
-
 			let eventHeaders = tools.lowerCaseKeys(event.headers);
 			let eventParameters = tools.lowerCaseKeys(event.queryStringParameters);
 					
@@ -133,7 +131,7 @@ const get = async (event) => {
 
 				response.statusCode = status;
 				response.body = body;
-				response.headers = tools.titleCaseKebabKeys(headers);
+				response.headers = Object.assign(response.headers, tools.titleCaseKebabKeys(headers));
 				
 			}
 
