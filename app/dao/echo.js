@@ -91,11 +91,11 @@ const get = async (event) => {
 				const requestEtag = ('if-none-match' in eventHeaders) ? eventHeaders['if-none-match'] : '';
 
 				// Set Modified Since
-				const serverModifiedSince = ('lastmodified' in eventParameters) ? eventParameters.lastmodified : 1;
-				const requestModifiedSince = ('if-modified-since' in eventHeaders) ? eventHeaders['if-modified-since'] : 0;
+				const serverLastModified = ('lastmodified' in eventParameters) ? new Date(Date.parse(eventParameters.lastmodified)) : null;
+				const requestModifiedSince = ('if-modified-since' in eventHeaders) ? new Date(Date.parse(eventHeaders['if-modified-since'])) : null;
 
 				// Return value for modified or etag
-				if ( requestEtag !== '' && (requestEtag === serverEtag || requestModifiedSince >= serverModifiedSince)) {
+				if ( (requestEtag !== '' && serverEtag !== '' && requestEtag === serverEtag) || (serverLastModified !== null && requestModifiedSince !== null && requestModifiedSince > serverLastModified)) {
 					status = 304;
 				}
 
@@ -109,6 +109,8 @@ const get = async (event) => {
 							body = event.body; // TEXT
 							headers['Content-Type'] = "text/html";
 						}
+					} else if (requestEtag !== '' || serverEtag !== '' || serverLastModified !== null || requestModifiedSince !== null ) {
+						body = { greeting: 'Hello, World!' };
 					} else {
 						body = {
 							statusCode: status,

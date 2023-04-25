@@ -585,7 +585,7 @@ describe("Echo", () => {
 
 		it('Status Request 505', async () => {
 
-			const myEvent = JSON.parse(JSON.stringify(event));
+			const myEvent = {...event}// clone 
 			myEvent.queryStringParameters = { status: 505 };
 
 			const obj = (await echo.get(myEvent));
@@ -597,7 +597,7 @@ describe("Echo", () => {
 
 		it('Status Request 700 - Bad Request (406)', async () => {
 
-			const myEvent = JSON.parse(JSON.stringify(event));
+			const myEvent = {...event}// clone 
 			myEvent.queryStringParameters = { status: 700 };
 
 			const obj = (await echo.get(myEvent));
@@ -609,31 +609,238 @@ describe("Echo", () => {
 
 		it('Status Request 301 - Redirect', async () => {
 
-			const myEvent = JSON.parse(JSON.stringify(event));
+			const myEvent = {...event}// clone 
 			myEvent.queryStringParameters = { status: 301 };
 
 			const obj = (await echo.get(myEvent));
 
 			expect(obj.statusCode).to.equal(301)
-			expect(obj.headers.Location).to.equal('https://api.chadkluck.net/games')
+			&& expect(obj.headers.Location).to.equal('https://api.chadkluck.net/games')
 
 		})
 
 		it('Status Request 302 - Redirect', async () => {
 
-			const myEvent = JSON.parse(JSON.stringify(event));
+			const myEvent = {...event}// clone 
 			myEvent.queryStringParameters = { status: 302 };
 
 			const obj = (await echo.get(myEvent));
 
 			expect(obj.statusCode).to.equal(302)
-			expect(obj.headers.Location).to.equal('https://api.chadkluck.net/games')
+			&& expect(obj.headers.Location).to.equal('https://api.chadkluck.net/games')
 
 		})
 	});
 
-	// add last modified and etag checks
+	describe("Last Modified and ETag", () => {
 
-	// add body checks with false flag
+		it('ETag returns 304 (Not Modified)', async () => {
+			const myEvent = {...event}// clone 
+			myEvent.headers = { 'if-none-match': 'asdf123qw' };
+			myEvent.queryStringParameters = { etag: 'asdf123qw' };
+
+			const obj = (await echo.get(myEvent));
+
+			expect(obj.statusCode).to.equal(304)
+			&& expect(obj.body).to.equal(null)
+		})
+
+		it('ETag returns 200 (Modified)', async () => {
+			const myEvent = {...event}// clone 
+			myEvent.headers = { 'if-none-match': 'asdf123qw' };
+			myEvent.queryStringParameters = { etag: 'jklp0987fds' };
+
+			const obj = (await echo.get(myEvent));
+
+			expect(obj.statusCode).to.equal(200)
+			&& expect(typeof obj.body).to.equal('object')
+			&& expect(obj.body.greeting).to.equal('Hello, World!')
+		})
+
+		it('If-None-Match passed but etag not', async () => {
+			const myEvent = {...event}// clone 
+			myEvent.headers = { 'if-none-match': 'asdf123qw' };
+
+			const obj = (await echo.get(myEvent));
+
+			expect(obj.statusCode).to.equal(200)
+			&& expect(typeof obj.body).to.equal('object')
+			&& expect(obj.body.greeting).to.equal('Hello, World!')
+		})
+
+		it('Etag passed but If-None-Match not', async () => {
+			const myEvent = {...event}// clone 
+			myEvent.queryStringParameters = { etag: 'jklp0987fds' };
+
+			const obj = (await echo.get(myEvent));
+
+			expect(obj.statusCode).to.equal(200)
+			&& expect(typeof obj.body).to.equal('object')
+			&& expect(obj.body.greeting).to.equal('Hello, World!')
+		})
+
+		it('Last Modified returns 304 (Not Modified)', async () => {
+			const myEvent = {...event}// clone 
+			myEvent.headers = { 'if-modified-since': 'Thu, 13 Apr 2023 16:31:43 GMT' };
+			myEvent.queryStringParameters = { 'lastmodified': 'Thu, 13 Apr 2023 16:31:40 GMT' };
+
+			const obj = (await echo.get(myEvent));
+
+			expect(obj.statusCode).to.equal(304)
+			&& expect(obj.body).to.equal(null)
+		})
+
+		it('Last Modified returns 200 (Modified)', async () => {
+			const myEvent = {...event}// clone 
+			myEvent.headers = { 'if-modified-since': 'Thu, 13 Apr 2023 12:00:00 GMT' };
+			myEvent.queryStringParameters = { 'lastmodified': 'Thu, 13 Apr 2023 16:00:40 GMT' };
+
+			const obj = (await echo.get(myEvent));
+
+			expect(obj.statusCode).to.equal(200)
+			&& expect(typeof obj.body).to.equal('object')
+			&& expect(obj.body.greeting).to.equal('Hello, World!')
+		})
+		
+		it('Last Modified passed but If-Modified-Since not (200)', async () => {
+			const myEvent = {...event}// clone 
+			myEvent.headers = { 'if-modified-since': 'Thu, 13 Apr 2023 12:00:00 GMT' };
+
+			const obj = (await echo.get(myEvent));
+
+			expect(obj.statusCode).to.equal(200)
+			&& expect(typeof obj.body).to.equal('object')
+			&& expect(obj.body.greeting).to.equal('Hello, World!')
+		})
+
+		it('If-Modified-Since passed but Last Modified Not (200)', async () => {
+			const myEvent = {...event}// clone 
+			myEvent.headers = { 'if-modified-since': 'Thu, 13 Apr 2023 12:00:00 GMT' };
+
+			const obj = (await echo.get(myEvent));
+
+			expect(obj.statusCode).to.equal(200)
+			&& expect(typeof obj.body).to.equal('object')
+			&& expect(obj.body.greeting).to.equal('Hello, World!')
+		})
+
+
+
+	});
+
+	describe("Send a Body", () => {
+
+		it('Send a Body and Request Body Echo', async () => {
+			const myEvent = {...event}// clone 
+			myEvent.queryStringParameters = { body: 'true'};
+			myEvent.httpMethod = 'POST';
+			myEvent.requestContext.httpMethod = 'POST';
+			myEvent.body = JSON.stringify({ greeting: 'Hello, Universe!'});
+
+			const obj = (await echo.get(myEvent));
+
+			expect(obj.statusCode).to.equal(200)
+			&& expect(obj.body.greeting).to.equal('Hello, Universe!')
+		})
+
+		it('Send a Body and Do Not Request Body Echo', async () => {
+			const myEvent = {...event}// clone 
+			myEvent.queryStringParameters = { body: 'false'};
+			myEvent.httpMethod = 'POST';
+			myEvent.requestContext.httpMethod = 'POST';
+			myEvent.body = JSON.stringify({ greeting: 'Hello, Universe!'});
+
+			const obj = (await echo.get(myEvent));
+
+			expect(obj.statusCode).to.equal(200)
+			&& expect(obj.body.requestInfo.protocol).to.equal('HTTP/1.1')
+		
+		})
+
+		it('Send a Body and Body Echo default', async () => {
+			const myEvent = {...event}// clone 
+			myEvent.httpMethod = 'POST';
+			myEvent.requestContext.httpMethod = 'POST';
+			myEvent.body = JSON.stringify({ greeting: 'Hello, Universe!'});
+
+			const obj = (await echo.get(myEvent));
+
+			expect(obj.statusCode).to.equal(200)
+			&& expect(obj.body.greeting).to.equal('Hello, Universe!')
+		
+		})
+
+		it('Send a Body and Request Body Echo invalid', async () => {
+			const myEvent = {...event}// clone 
+			myEvent.queryStringParameters = { body: 'asdf'};
+			myEvent.httpMethod = 'POST';
+			myEvent.requestContext.httpMethod = 'POST';
+			myEvent.body = JSON.stringify({ greeting: 'Hello, Universe!'});
+
+			const obj = (await echo.get(myEvent));
+
+			expect(obj.statusCode).to.equal(200)
+			&& expect(obj.body.greeting).to.equal('Hello, Universe!')
+		
+		})
+
+		it('ETag returns 304 with Body Sent', async () => {
+			const myEvent = {...event}// clone 
+			myEvent.headers = { 'if-none-match': 'asdf123qw' };
+			myEvent.queryStringParameters = { etag: 'asdf123qw', body: 'true'};
+			myEvent.httpMethod = 'POST';
+			myEvent.requestContext.httpMethod = 'POST';
+			myEvent.body = JSON.stringify({ greeting: 'Hello, Universe!'});
+
+			const obj = (await echo.get(myEvent));
+
+			expect(obj.statusCode).to.equal(304)
+			&& expect(obj.body).to.equal(null)
+		})
+
+		it('ETag returns 200 with Body Sent', async () => {
+			const myEvent = {...event}// clone 
+			myEvent.headers = { 'if-none-match': 'asdf123qw' };
+			myEvent.queryStringParameters = { etag: 'jklp0987fds', body: 'true'};
+			myEvent.httpMethod = 'POST';
+			myEvent.requestContext.httpMethod = 'POST';
+			myEvent.body = JSON.stringify({ greeting: 'Hello, Universe!'});
+
+			const obj = (await echo.get(myEvent));
+
+			expect(obj.statusCode).to.equal(200)
+			&& expect(typeof obj.body).to.equal('object')
+			&& expect(obj.body.greeting).to.equal('Hello, Universe!')
+		})
+
+		it('Last Modified returns 304 and Null Body with Body Sent', async () => {
+			const myEvent = {...event}// clone 
+			myEvent.headers = { 'if-modified-since': 'Thu, 13 Apr 2023 16:31:43 GMT' };
+			myEvent.queryStringParameters = { 'lastmodified': 'Thu, 13 Apr 2023 16:31:40 GMT', body: 'true'};
+			myEvent.httpMethod = 'POST';
+			myEvent.requestContext.httpMethod = 'POST';
+			myEvent.body = JSON.stringify({ greeting: 'Hello, Universe!'});
+
+			const obj = (await echo.get(myEvent));
+
+			expect(obj.statusCode).to.equal(304)
+			&& expect(obj.body).to.equal(null)
+		})
+
+		it('Last Modified returns 200 with Body Sent', async () => {
+			const myEvent = {...event}// clone 
+			myEvent.headers = { 'if-modified-since': 'Thu, 13 Apr 2023 12:00:00 GMT' };
+			myEvent.queryStringParameters = { 'lastmodified': 'Thu, 13 Apr 2023 16:00:40 GMT', body: 'true'};
+			myEvent.httpMethod = 'POST';
+			myEvent.requestContext.httpMethod = 'POST';
+			myEvent.body = JSON.stringify({ greeting: 'Hello, Universe!'});
+
+			const obj = (await echo.get(myEvent));
+
+			expect(obj.statusCode).to.equal(200)
+			&& expect(typeof obj.body).to.equal('object')
+			&& expect(obj.body.greeting).to.equal('Hello, Universe!')
+		})
+	});
 
 });
