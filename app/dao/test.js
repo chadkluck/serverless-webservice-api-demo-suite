@@ -6,32 +6,44 @@ testData.employees = [
     {
         name: "John Doe",
         id: "100000001",
-        city: "Austin"
+        department: "Engineering",
+        city: "Austin",
+        salary: 150000
     },
     {
         name: "Jane Doe",
         id: "100000002",
-        city: "San Diego"
+        department: "Engineering",
+        city: "San Diego",
+        salary: 200000
     },
     {
         name: "Jackie Groverton",
         id: "100000003",
-        city: "Chicago"
+        department: "Accounting",
+        city: "Chicago",
+        salary: 125000
     },
     {
         name: "Nelson Frisco",
         id: "100000004",
-        city: "Denver"
+        department: "Development",
+        city: "Denver",
+        salary: 130000
     },
     {
         name: "Jamie McElroy",
         id: "100000005",
-        city: "Washington"
+        department: "Development",
+        city: "Washington",
+        salary: 110000
     },
     {
         name: "Charley Bruntin",
         id: "100000006",
-        city: "Omaha"
+        department: "Sales",
+        city: "Omaha",
+        salary: 100000
     },
 ];
 
