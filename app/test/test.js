@@ -844,3 +844,69 @@ describe("Echo", () => {
 	});
 
 });
+
+describe("Test", () => {
+	const event = {
+		resource: '/{id}',
+		path: '/test',
+		httpMethod: 'GET',
+		headers: {
+			'CloudFront-Viewer-Country': 'US',
+			Host: 'abcdef1234.execute-api.us-east-2.amazonaws.com',
+			'User-Agent': 'PostmanRuntime/7.31.3',
+			'X-Test': 'true'
+		},
+		multiValueHeaders: {
+			'CloudFront-Viewer-Country': [ 'US' ],
+			Host: [ 'abcdef1234.execute-api.us-east-2.amazonaws.com' ],
+			'User-Agent': [ 'PostmanRuntime/7.31.3' ],
+			'X-Test': [ 'true' ]
+		},
+		queryStringParameters: null,
+		multiValueQueryStringParameters: null,
+		pathParameters: { id: 'echo' },
+		requestContext: {
+			resourceId: 'uuqygl',
+			resourcePath: '/{id}',
+			httpMethod: 'GET',
+			path: '/demo-test/test',
+			protocol: 'HTTP/1.1',
+			domainPrefix: 'abcdef1234',
+			identity: {
+				sourceIp: '10.0.0.39',
+				userAgent: 'PostmanRuntime/7.31.3',
+			},
+			domainName: 'abcdef1234.execute-api.us-east-2.amazonaws.com',
+			apiId: 'abcdef1234'
+		},
+		body: null,
+		isBase64Encoded: false
+	};
+
+	it('Default', async () => {
+
+		const obj = (await test.get(event));
+
+		expect(typeof obj).to.equal('object')
+		&& expect(obj.statusCode).to.equal(200)
+		&& expect(obj.headers['Content-Type']).to.equal('application/json')
+
+	})
+
+	// describe("Status Requests", () => {
+
+	// 	it('Status Request 418', async () => {
+
+	// 		const myEvent = {...event}// clone //JSON.parse(JSON.stringify(event));
+	// 		myEvent.queryStringParameters = { status: 418 };
+
+	// 		const obj = (await echo.get(myEvent));
+
+	// 		expect(obj.statusCode).to.equal(418)
+	// 		&& expect(obj.body.message).to.equal('418 I\'m a teapot')
+
+	// 	})
+
+	// });
+
+});
