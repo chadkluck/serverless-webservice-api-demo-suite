@@ -12,9 +12,6 @@ phases:
       # Perform a fix to move us forward, then check to make sure there were no unresolved high fixes
       - npm audit fix --force
       - npm audit --audit-level=high
-      
-      # run tests
-      # - npm test
 
       # Go back to root
       - cd ..
