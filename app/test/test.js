@@ -743,6 +743,19 @@ describe("Echo", () => {
 			&& expect(obj.body.greeting).to.equal('Hello, Universe!')
 		})
 
+		it('Send a non-JSON Body', async () => {
+			const myEvent = {...event}; // clone 
+			myEvent.httpMethod = 'POST';
+			myEvent.requestContext.httpMethod = 'POST';
+			myEvent.body = "<p>Hello, <strong>Universe!</strong></p>";
+
+			const obj = (await echo.get(myEvent));
+
+			expect(obj.statusCode).to.equal(200)
+			&& expect(obj.body).to.equal('<p>Hello, <strong>Universe!</strong></p>')
+			&& expect(obj.headers['Content-Type']).to.equal('text/html')
+		})
+
 		it('Send a Body and Do Not Request Body Echo', async () => {
 			const myEvent = {...event}; // clone 
 			myEvent.queryStringParameters = { body: 'false'};
