@@ -71,11 +71,19 @@ Examples given at an UMWUG conference presentation.
 
 `/umwug`
 
+`/umwug?code=BAO`
+
+The `code` parameter may also be set to: `CBL`, `LVP`, `CPE`, `DEV`, `DOC`, `LNF`, `GIT`, `BNS`
+
 ### ELUNA
 
 Examples given at an ELUNA conference presentation.
 
 `/eluna`
+
+`/eluna?code=BAO`
+
+The `code` parameter may also be set to: `CBL`, `LVP`, `CPE`, `DEV`, `DOC`, `LNF`, `GIT`, `BNS`, `8BL`
 
 ### Weather
 
