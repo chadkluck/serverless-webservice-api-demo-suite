@@ -26,8 +26,6 @@ phases:
       - chmod a+x tools/generate-put-keys.sh
       - tools/generate-put-keys.sh $PARAM_STORE_PATH "256" $AWS_REGION $ACCOUNT_ID #keylength needs to correspond with default (or override) specified for CryptSecureDataAlg in template.yml
 
-      # Discover and run unit tests in the 'tests' directory
-      - npm test
 
   build:
     commands:
@@ -38,6 +36,11 @@ phases:
       # Update the AWS Partition, AWS Region, account ID and project ID in the project ARN in template-configuration.json file so AWS CloudFormation can tag project resources.
       - sed -i.bak 's|\$PARTITION\$|'${PARTITION}'|g;s|\$AWS_REGION\$|'${AWS_REGION}'|g;s|\$ACCOUNT_ID\$|'${ACCOUNT_ID}'|g;s|\$PROJECT_ID\$|'${PROJECT_ID}'|g;s|\$PROJECT_STAGE_ID\$|'${PROJECT_STAGE_ID}'|g;s|\$DEPLOY_ENVIRONMENT\$|'${DEPLOY_ENVIRONMENT}'|g;s|\$DEPLOY_STAGE\$|'${DEPLOY_STAGE}'|g' template-configuration.json
 
+      # Discover and run unit tests in the 'tests' directory
+      - cd app
+      - npm test
+      - cd ..
+      
 artifacts:
   files:
     - template-export.yml
