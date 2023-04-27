@@ -6,7 +6,7 @@ const data = {
 		{
 			name: 'Games',
 			description: '',
-			method: 'GET',
+			methods: ['GET'],
 			endpoint: '{{domain}}',
 			path: '{{path}}/games',
 			examples: [
@@ -21,7 +21,7 @@ const data = {
 		{
 			name: '8 Ball',
 			description: '',
-			method: 'GET',
+			methods: ['GET'],
 			domain: '{{domain}}',
 			path: '{{path}}/ball',
 			examples: [
@@ -35,7 +35,7 @@ const data = {
 		{
 			name: 'ELUNA',
 			description: '',
-			method: 'GET',
+			methods: ['GET'],
 			domain: '{{domain}}',
 			path: '{{path}}/eluna',
 			examples: [
@@ -56,7 +56,7 @@ const data = {
 		{
 			name: 'UMWUG',
 			description: '',
-			method: 'GET',
+			methods: ['GET'],
 			domain: '{{domain}}',
 			path: '{{path}}/umwug',
 			examples: [
@@ -74,9 +74,16 @@ const data = {
 			]
 		},
 		{
+			name: 'Weather',
+			description: '',
+			methods: ['GET'],
+			domain: '{{domain}}',
+			path: '{{path}}/weather'
+		},
+		{
 			name: 'Test',
 			description: '',
-			method: 'GET',
+			methods: ['GET'],
 			domain: '{{domain}}',
 			path: '{{path}}/test',
 			examples: [
@@ -91,16 +98,19 @@ const data = {
 		{
 			name: 'Echo',
 			description: '',
-			method: 'GET',
+			methods: ['GET', 'POST'],
 			domain: '{{domain}}',
-			path: '{{path}}/echo'
-		},
-		{
-			name: 'Weather',
-			description: '',
-			method: 'GET',
-			domain: '{{domain}}',
-			path: '{{path}}/weather'
+			path: '{{path}}/echo',
+			examples: [
+				'https://{{domain}}{{path}}/echo',
+				'https://{{domain}}{{path}}/echo?status=301',
+				'https://{{domain}}{{path}}/echo?status=302',
+				'https://{{domain}}{{path}}/echo?status=404',
+				'https://{{domain}}{{path}}/echo?status=418',
+				'https://{{domain}}{{path}}/echo?status=500',
+				"curl --location 'https://{{domain}}{{path}}/echo/?etag=ef4a8cde' \\\n--header 'If-None-Match: ef4a8cde",
+				"curl --location 'https://{{domain}}{{path}}/echo/?etag=123fd9ced' \\\n--header 'If-None-Match: ef4a8cde'"
+			]
 		}
 	]
 };

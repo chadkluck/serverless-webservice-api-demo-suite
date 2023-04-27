@@ -845,6 +845,12 @@ describe("Echo", () => {
 
 });
 
+
+/* ****************************************************************************
+ *	TEST
+ */
+
+
 describe("Test", () => {
 	const event = {
 		resource: '/{id}',
@@ -883,7 +889,7 @@ describe("Test", () => {
 		isBase64Encoded: false
 	};
 
-	it('Default 200 Content-Type json', async () => {
+	it('Default All Data', async () => {
 
 		const obj = (await test.get(event));
 
