@@ -14,7 +14,7 @@ phases:
       - npm audit --audit-level=high
       
       # run tests
-      - npm test
+      # - npm test
 
       # Go back to root
       - cd ..
@@ -30,7 +30,7 @@ phases:
       - tools/generate-put-keys.sh $PARAM_STORE_PATH "256" $AWS_REGION $ACCOUNT_ID #keylength needs to correspond with default (or override) specified for CryptSecureDataAlg in template.yml
 
       # Discover and run unit tests in the 'tests' directory
-      #- npm test
+      - npm test
 
   build:
     commands:
