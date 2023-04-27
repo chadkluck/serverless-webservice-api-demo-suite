@@ -1,6 +1,6 @@
 const tools = require("../utils/tools.js");
 
-const statusError = { statusCode: 406, body: "I'm sorry, Dave, I'm afraid {{STATUS}} isn't a valid status code" };
+const statusError = { status: 406, message: "I'm sorry, Dave, I'm afraid {{STATUS}} isn't a valid status code" };
 
 const statusCodes = {
     '100': 'Continue',
@@ -39,33 +39,41 @@ const statusCodes = {
     '501': 'Not Implemented',
     '502': 'Bad Gateway',
     '503': 'Service Unavailable',
-    '504': 'Gateway Time-out',
-    '505': 'HTTP Version not supported'
+    '504': 'Gateway Timeout',
+    '505': 'HTTP Version Not Supported'
 };
 
 
 /**
  * 
+ * @param {number} statusCode 
+ * @returns {{status: number, message: string}}
  */
 const getStatusCode = function (statusCode) {
-	let obj = {statusCode: 200, message: "" };
+	let obj = {status: 200, message: "" };
 
 	if ( `${statusCode}` in statusCodes ) {
-		obj.statusCode = parseInt(statusCode, 10);
+		obj.status = parseInt(statusCode, 10);
 		obj.message = statusCodes[`${statusCode}`];
 	} else {
-		obj.statusCode = statusError.statusCode;
-		obj.message = statusError.body.replace('{{STATUS}}', statusCode);
+		obj.status = statusError.status;
+		obj.message = statusError.message.replace('{{STATUS}}', statusCode);
 	}
 
 	return obj;
 };
 
+/**
+ * Receive an HTTP Request and return a response defined in that request
+ * 
+ * @param {object} event Lambda Event Object
+ * @returns {{statusCode: number, body: object, headers: object}} HTTP Response Object
+ */
 const get = async (event) => {
 
-	return new Promise(async (resolve, reject) => {
+	let response = {statusCode: 200, body: null, headers: {'Content-Type': 'application/json'}};
 
-		let response = {statusCode: 200, body: null, headers: {'Content-Type': 'application/json'}};
+	return new Promise(async (resolve, reject) => {
 
 		try {
 
@@ -74,47 +82,77 @@ const get = async (event) => {
 					
 			if ("status" in eventParameters) {
 				const obj = getStatusCode(eventParameters.status);
-				response.statusCode = obj.statusCode;
+				response.statusCode = obj.status;
 
 				if (response.statusCode === 301 || response.statusCode === 302) {
 					response.headers = { Location: "https://api.chadkluck.net/games" };
 				} else {
-					response.body = { message: `${obj.statusCode} ${obj.message}` };
+					if ( !('accept' in eventHeaders) || ('accept' in eventHeaders && eventHeaders['accept'] !== 'text/plain' ) ) {
+						response.body = { status: obj.status, message: obj.message }
+					} else {
+						response.body = `${obj.status} ${obj.message}`;
+						response.headers['Content-Type'] = 'text/plain';
+					}
 				}
+
 			} else {
-				let body = null;
-				let status = 200;
-				let headers = {};
 
 				// Set Etag
 				const serverEtag = ('etag' in eventParameters) ? eventParameters.etag : '';
 				const requestEtag = ('if-none-match' in eventHeaders) ? eventHeaders['if-none-match'] : '';
 
+				let serverLastModified = null;
+				let requestModifiedSince = null;
+				
 				// Set Modified Since
-				const serverLastModified = ('lastmodified' in eventParameters) ? new Date(Date.parse(eventParameters.lastmodified)) : null;
-				const requestModifiedSince = ('if-modified-since' in eventHeaders) ? new Date(Date.parse(eventHeaders['if-modified-since'])) : null;
-
-				// Return value for modified or etag
-				if ( (requestEtag !== '' && serverEtag !== '' && requestEtag === serverEtag) || (serverLastModified !== null && requestModifiedSince !== null && requestModifiedSince > serverLastModified)) {
-					status = 304;
+				try {
+					serverLastModified = ('lastmodified' in eventParameters 
+						&& eventParameters.lastmodified !== undefined
+						&& eventParameters.lastmodified !== null 
+						&& eventParameters.lastModified !== '' ) ? new Date(Date.parse(eventParameters.lastmodified)) : null;
+					requestModifiedSince = ('if-modified-since' in eventHeaders
+						&& eventHeaders['if-modified-since'] !== undefined
+						&& eventHeaders['if-modified-since'] !== null
+						&& eventHeaders['if-modified-since'] !== '') ? new Date(Date.parse(eventHeaders['if-modified-since'])) : null;
+						
+						console.log({serverLastModified,  requestModifiedSince});
+				} catch (error) {
+					// ignore - date parse error
+					console.error(error);
 				}
 
-				if (status === 200) {
+				// Set status if Not Modified
+				if ( (requestEtag !== '' && serverEtag !== '' && requestEtag === serverEtag) 
+					|| (serverLastModified !== null && requestModifiedSince !== null && requestModifiedSince > serverLastModified)) {
+					response.statusCode = 304;
+				}
+
+				// Set Etag if we received one
+				if (serverEtag !== '') {
+					response.headers['ETag'] = serverEtag;
+				}
+
+				// Set Last Modified if we received one
+				if (serverLastModified !== null) {
+					response.headers['Last-Modified'] = serverLastModified.toUTCString();
+				}
+
+				if (response.statusCode === 200) {
 
 					// if a body was sent without an explicit body=false in query string then we echo the body
 					if ("body" in event && event.body !== null && !('body' in eventParameters && eventParameters.body.toLowerCase() === "false")) {
 						try {
-							body = JSON.parse(event.body); // JSON
+							response.body = JSON.parse(event.body); // JSON
 						} catch (e) {
-							body = event.body; // TEXT
-							headers['Content-Type'] = "text/html";
+							response.body = event.body; // TEXT
+							response.headers['Content-Type'] = "text/html";
 						}
 					} else if (requestEtag !== '' || serverEtag !== '' || serverLastModified !== null || requestModifiedSince !== null ) {
-						body = { greeting: 'Hello, World!' };
+						response.body = { greeting: 'Hello, World!' };
 					} else {
-						body = {
-							statusCode: status,
-							statusMessage: statusCodes[`${status}`],
+						response.body = {
+							statusCode: response.statusCode,
+							statusMessage: statusCodes[`${response.statusCode}`],
 							requestInfo: {
 								protocol: event.requestContext.protocol,
 								method: event.requestContext.httpMethod,
@@ -130,18 +168,16 @@ const get = async (event) => {
 
 					}
 				};
-
-				response.statusCode = status;
-				response.body = body;
-				response.headers = Object.assign(response.headers, tools.titleCaseKebabKeys(headers));
-				
 			}
+			
+			response.headers = tools.titleCaseKebabKeys(response.headers);
 
 			resolve( response );
 					
 		} catch (error) {
-			response.body = { app: 'echo', message: 'error' }
 			response.statusCode = 500;
+			response.body = { status: 500, message: 'error', app: 'echo'}
+
 			reject( response );
 		};
 

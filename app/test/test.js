@@ -518,7 +518,7 @@ describe("UMWUG", () => {
  */
 
 
-describe("Echo", () => {
+describe("Echo", async () => {
 	const event = {
 		resource: '/{id}',
 		path: '/echo',
@@ -569,17 +569,18 @@ describe("Echo", () => {
 
 	})
 
-	describe("Status Requests", () => {
+	describe("Status Requests", async () => {
 
 		it('Status Request 418', async () => {
 
-			const myEvent = {...event}; // clone //JSON.parse(JSON.stringify(event));
+			const myEvent = {...event}; // clone
 			myEvent.queryStringParameters = { status: 418 };
 
 			const obj = (await echo.get(myEvent));
 
 			expect(obj.statusCode).to.equal(418)
-			&& expect(obj.body.message).to.equal('418 I\'m a teapot')
+			&& expect(obj.body.status).to.equal(418)
+			&& expect(obj.body.message).to.equal('I\'m a teapot')
 
 		})
 
@@ -591,7 +592,8 @@ describe("Echo", () => {
 			const obj = (await echo.get(myEvent));
 
 			expect(obj.statusCode).to.equal(505)
-			&& expect(obj.body.message).to.equal('505 HTTP Version not supported')
+			&& expect(obj.body.status).to.equal(505)
+			&& expect(obj.body.message).to.equal('HTTP Version Not Supported')
 
 		})
 
@@ -603,7 +605,48 @@ describe("Echo", () => {
 			const obj = (await echo.get(myEvent));
 
 			expect(obj.statusCode).to.equal(406)
-			&& expect(obj.body.message).to.equal('406 I\'m sorry, Dave, I\'m afraid 700 isn\'t a valid status code')
+			&& expect(obj.body.status).to.equal(406)
+			&& expect(obj.body.message).to.equal('I\'m sorry, Dave, I\'m afraid 700 isn\'t a valid status code')
+
+		})
+
+		
+		it('Status Request 418 - text/plain', async () => {
+
+			const myEvent = {...event}; // clone
+			myEvent.headers = {'Accept': 'text/plain'};
+			myEvent.queryStringParameters = { status: 418 };
+
+			const obj = (await echo.get(myEvent));
+
+			expect(obj.statusCode).to.equal(418)
+			&& expect(obj.body).to.equal('418 I\'m a teapot')
+
+		})
+
+		it('Status Request 505 - text/plain', async () => {
+
+			const myEvent = {...event}; // clone 
+			myEvent.headers = {'Accept': 'text/plain'};
+			myEvent.queryStringParameters = { status: 505 };
+
+			const obj = (await echo.get(myEvent));
+
+			expect(obj.statusCode).to.equal(505)
+			&& expect(obj.body).to.equal('505 HTTP Version Not Supported')
+
+		})
+
+		it('Status Request 700 - Bad Request (406) - text/plain', async () => {
+
+			const myEvent = {...event}; // clone 
+			myEvent.headers = {'Accept': 'text/plain'};
+			myEvent.queryStringParameters = { status: 700 };
+
+			const obj = (await echo.get(myEvent));
+
+			expect(obj.statusCode).to.equal(406)
+			&& expect(obj.body).to.equal('406 I\'m sorry, Dave, I\'m afraid 700 isn\'t a valid status code')
 
 		})
 
@@ -687,6 +730,7 @@ describe("Echo", () => {
 			const obj = (await echo.get(myEvent));
 
 			expect(obj.statusCode).to.equal(304)
+			&& expect(obj.headers['Last-Modified']).to.equal('Thu, 13 Apr 2023 16:31:40 GMT')
 			&& expect(obj.body).to.equal(null)
 		})
 
