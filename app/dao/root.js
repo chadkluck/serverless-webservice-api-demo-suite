@@ -108,8 +108,12 @@ const data = {
 				'https://{{domain}}{{path}}/echo?status=404',
 				'https://{{domain}}{{path}}/echo?status=418',
 				'https://{{domain}}{{path}}/echo?status=500',
-				"curl --location 'https://{{domain}}{{path}}/echo/?etag=ef4a8cde' \\\n--header 'If-None-Match: ef4a8cde",
-				"curl --location 'https://{{domain}}{{path}}/echo/?etag=123fd9ced' \\\n--header 'If-None-Match: ef4a8cde'"
+				"curl --request GET --location 'https://{{domain}}{{path}}/echo/?etag=ef4a8cde' --header 'If-None-Match: ef4a8cde",
+				"curl --request GET --location 'https://{{domain}}{{path}}/echo?etag=123fd9ced' --header 'If-None-Match: ef4a8cde'",
+				"curl --request GET --location ''https://{{domain}}{{path}}/echo/?lastmodified=2023-04-27' --header 'If-Modified-Since: Thu, 27 Apr 2023 01:07:01 GMT'",
+				"curl --request GET --location ''https://{{domain}}{{path}}/echo/?lastmodified=2023-04-28' --header 'If-Modified-Since: Thu, 27 Apr 2023 01:07:01 GMT'",
+				"curl --request POST --location 'https://{{domain}}{{path}}/echo' --header 'Content-Type: application/json' --data '{\"name\": \"Body POST Test\"}'",
+				"curl --request POST --location 'https://{{domain}}{{path}}/echo?body=false' --header 'Content-Type: application/json' --data '{\"name\": \"Body POST Test\"}'"
 			]
 		}
 	]
