@@ -16,6 +16,8 @@ phases:
       # Go back to root
       - cd ..
 
+      # Upgrade PIP to latest
+      - pip install --upgrade pip
       # Upgrade AWS CLI to the latest version
       - pip install --upgrade awscli
   
