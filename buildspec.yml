@@ -5,6 +5,7 @@ phases:
     runtime-versions:
       nodejs: latest
     commands:
+      - npm i npm@latest
       # Install dependencies needed for application
       - cd app
       - npm ci
@@ -16,9 +17,8 @@ phases:
       # Go back to root
       - cd ..
 
-      # Upgrade PIP to latest
+      # Upgrade to latest
       - pip install --upgrade pip
-      # Upgrade AWS CLI to the latest version
       - pip install --upgrade awscli
   
   pre_build:
