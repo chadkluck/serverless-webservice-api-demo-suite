@@ -1,10 +1,10 @@
 {
 	"name": "demo-template",
 	"version": "0.0.1",
-	"description": "Serverless Demo Template",
+	"description": "Serverless Demo Suite for Exploring and Testing",
 	"main": "index.js",
 	"repository": "",
-	"author": "University of St. Thomas Libraries - Chad Kluck",
+	"author": "Chad Kluck",
 	"license": "MIT",
 	"engines": {
 		"node": "*"
@@ -19,9 +19,11 @@
 		"@chadkluck/cache-data": "^1.0.19"
 	},
 	"devDependencies": {
-		"aws-sdk": "^2.1211.0",
-		"chai": "^4.3.6",
+		"aws-sdk": "^2.1367.0",
+		"chai": "^4.3.7",
 		"chai-http": "^4.3.0",
-		"mocha": "^10.0.0"
+		"lambda-tester": "^4.0.1",
+		"mocha": "^10.2.0",
+		"proxyquire": "^2.1.3"
 	}
 }
