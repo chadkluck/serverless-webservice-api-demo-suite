@@ -4,7 +4,7 @@ const { cache, endpoint } = require('@chadkluck/cache-data');
  * Connects to an external weather api and retrieves weather information
  * @returns {Response} weather information
  */
-const get = async (connection) => {
+const get = async (connection, event) => {
 
 	return new Promise(async (resolve, reject) => {
 
@@ -12,13 +12,13 @@ const get = async (connection) => {
 
 		try {
 
-			let body = {};
-
 			let conn = connection.toObject();
+			console.log("CONN", conn);
 
 			if (conn.parameters.appid !== "") {
 
 				let cacheCfg = connection.getCacheProfile("default");
+				// you can grab query params from the event and pass to the weather api
 
 				const cacheObj = await cache.CacheableDataAccess.getData(
 					cacheCfg, 
@@ -27,7 +27,7 @@ const get = async (connection) => {
 					null
 				);
 
-				console.log(cacheObj.getBody(true));
+				console.log("RESP", cacheObj.getBody(true));
 
 				response.body = cacheObj.getBody(true);
 			} else {
