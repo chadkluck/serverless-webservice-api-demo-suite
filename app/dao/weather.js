@@ -1,14 +1,12 @@
-const { tools, cache, endpoint } = require('@chadkluck/cache-data');
+const { cache, endpoint } = require('@chadkluck/cache-data');
 
 /**
  * Connects to an external weather api and retrieves weather information
  * @returns {Response} weather information
  */
-const get = async (connection, event) => {
+const get = async (connection) => {
 
 	return new Promise(async (resolve, reject) => {
-
-		const timerTaskWeather = new tools.Timer("timerTaskWeather", true);
 
 		let response = {statusCode: 200, body: null, headers: {'content-type': 'application/json'}};
 
@@ -17,8 +15,6 @@ const get = async (connection, event) => {
 			let body = {};
 
 			let conn = connection.toObject();
-			// conn.path = ""; // we will just use the path set in the connection details
-
 
 			if (conn.parameters.appid !== "") {
 
@@ -38,17 +34,14 @@ const get = async (connection, event) => {
 
 			response.body = body;
 
-			timerTaskWeather.stop();
-
 			resolve( response );
 			
 		} catch (error) {
-			tools.DebugAndLog.error("taskWeather CacheController error", error);
-			timerTaskWeather.stop();
-			response.body = { app: 'weather', message: 'error' }
+			console.log(error);
+			response.body = { status: 500, message: 'error', app: 'weather' }
 			response.statusCode = 500;
 			reject( response );
-		};
+        };
 
 	});
 

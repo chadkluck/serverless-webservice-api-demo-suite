@@ -138,10 +138,11 @@ const get = async (event) => {
             resolve( response );
 
         } catch (error) {
-            response.body = { app: 'test', message: 'error' }
+			console.log(error);
+			response.body = { status: 500, message: 'error', app: 'test' }
 			response.statusCode = 500;
-            reject( response );
-        }
+			reject( response );
+        };
     });
 
 };

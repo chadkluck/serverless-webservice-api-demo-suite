@@ -175,11 +175,11 @@ const get = async (event) => {
 			resolve( response );
 					
 		} catch (error) {
+			console.log(error);
+			response.body = { status: 500, message: 'error', app: 'echo' }
 			response.statusCode = 500;
-			response.body = { status: 500, message: 'error', app: 'echo'}
-
 			reject( response );
-		};
+        };
 
 	});
 

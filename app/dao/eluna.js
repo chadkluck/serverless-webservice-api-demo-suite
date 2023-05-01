@@ -64,7 +64,8 @@ const get = async (code = null) => {
             resolve( response );
                 
         } catch (error) {
-			response.body = { app: 'eluna', message: 'error' }
+			console.log(error);
+			response.body = { status: 500, message: 'error', app: 'eluna' }
 			response.statusCode = 500;
 			reject( response );
         };
