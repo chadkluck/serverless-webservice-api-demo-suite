@@ -89,6 +89,10 @@ The `code` parameter may also be set to: `CBL`, `LVP`, `CPE`, `DEV`, `DOC`, `LNF
 
 `/weather`
 
+You will need to create an account at Open Weather Map and generate an API Key. 
+
+Then store the API Key in Parameter Store for each deployment. For example, here is the SSM Parameter Store location for the beta stage deployment: `/projectstack-api-demo-suite-beta/apikey_weather`
+
 ### Echo
 
 Echoes back a requested response.
