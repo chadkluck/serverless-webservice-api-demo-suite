@@ -27,6 +27,8 @@ const get = async (connection) => {
 					null
 				);
 
+				console.log(cacheObj.getBody(true));
+
 				response.body = cacheObj.getBody(true);
 			} else {
 				response.body = { status: 404, message: "weather api key not set", app: 'weather' };
