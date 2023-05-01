@@ -12,8 +12,7 @@ const get = async (connection, event) => {
 
 		try {
 
-			let conn = connection.toObject();
-			console.log("CONN", conn);
+			const conn = connection.toObject();
 
 			if (conn.parameters.appid !== "") {
 
@@ -26,8 +25,6 @@ const get = async (connection, event) => {
 					conn, 
 					null
 				);
-
-				console.log("RESP", cacheObj.getBody(true));
 
 				response.body = cacheObj.getBody(true);
 			} else {
