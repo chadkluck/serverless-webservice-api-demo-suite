@@ -62,7 +62,8 @@ const get = async (code = null) => {
             resolve( response );
                 
         } catch (error) {
-			response.body = { app: 'umwug', message: 'error' }
+			console.log(error);
+			response.body = { status: 500, message: 'error', app: 'umwug' }
 			response.statusCode = 500;
 			reject( response );
         };
