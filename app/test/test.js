@@ -957,7 +957,7 @@ describe("Test", () => {
 		&& expect(obj.body.employees[0].id).to.equal("100000001")
 		&& expect(obj.body.books.length).to.equal(3)
 		&& expect(obj.body.books[0].id).to.equal("1234567-001")
-		&& expect(obj.body.posts.length).to.equal(6)
+		&& expect(obj.body.posts.length).to.equal(7)
 		&& expect(obj.body.posts[0].id).to.equal("123001")
 	})
 
@@ -1102,7 +1102,7 @@ describe("Test", () => {
 
 			expect(obj.statusCode).to.equal(200)
 			&& expect(typeof obj.body).to.equal('object')
-			&& expect(obj.body.length).to.equal(6)
+			&& expect(obj.body.length).to.equal(7)
 			&& expect(obj.body[5].id).to.equal("123006")
 
 		})

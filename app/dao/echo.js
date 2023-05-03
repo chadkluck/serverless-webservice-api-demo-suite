@@ -115,7 +115,6 @@ const get = async (event) => {
 						&& eventHeaders['if-modified-since'] !== null
 						&& eventHeaders['if-modified-since'] !== '') ? new Date(Date.parse(eventHeaders['if-modified-since'])) : null;
 						
-						console.log({serverLastModified,  requestModifiedSince});
 				} catch (error) {
 					// ignore - date parse error
 					console.error(error);

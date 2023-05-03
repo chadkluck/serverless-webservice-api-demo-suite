@@ -128,8 +128,15 @@ testData.posts = [
         <p>Nullam auctor, nunc non consectetur tristique, nisl nibh vulputate nunc, at ultricies nisi nunc a nibh. Nulla facilisi. Sed auctor, sem at aliquet vulputate.</p>
         <p>Integer congue sem nec luctus porttitor. Donec euismod nec purus vitae condimentum. Morbi sed elementum sapien. Suspendisse quis imperdiet sem. Cras ullamcorper iaculis velit, in aliquam nisi convallis a. Nam quam ante, rhoncus in sapien eget, egestas ultricies ipsum. Donec in lorem orci. Vivamus at urna id erat bibendum commodo. Duis a sapien dictum, imperdiet quam ut, posuere urna. Etiam in leo leo. </p>
         <p>Lorum ipsum dolor sit amet, consectetur adipiscing elit. Sed vitae nibh nec elit gravida sodales. Sed sed nibh in elit ullamcorper feugiat. Sed nec nibh et justo luctus ultricies. Sed non nibh.</p>`
-    }    
-]
+    },
+    {
+        title: "Guide to Glyphs & Symbols",
+        author: "Guy Smiley ☺",
+        id: "123007",
+        date: "2023-04-09T00:00:00.000Z",
+        content: "<p>ӵ옻😃🙊♪Ⴀ🍕ẽ€ếⓒḉ</p><p>&amp;&#151;&copy;</p>"
+    } 
+];
 
 const getEmployeeById = function (id) {
     function isEmployee(employee) {
@@ -155,7 +162,7 @@ const getBookByISBN = function (isbn) {
     return testData.books.find(isBook);
 };
 
-const getPostsById = function (id) {
+const getPostById = function (id) {
     function isPost(post) {
         return post.id === id;
     };
@@ -195,10 +202,11 @@ const get = async (event) => {
                         break;
                     case "posts":
                         if ("id" in eventParameters) {
-                            data = getPostsById(eventParameters.id);
+                            data = getPostById(eventParameters.id);
                         } else {
                             data = testData.posts;
                         }
+                        break;
                     default:
                         data = testData;
                         break;
