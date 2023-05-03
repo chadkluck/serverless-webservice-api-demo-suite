@@ -957,7 +957,8 @@ describe("Test", () => {
 		&& expect(obj.body.employees[0].id).to.equal("100000001")
 		&& expect(obj.body.books.length).to.equal(3)
 		&& expect(obj.body.books[0].id).to.equal("1234567-001")
-
+		&& expect(obj.body.posts.length).to.equal(6)
+		&& expect(obj.body.posts[0].id).to.equal("123001")
 	})
 
 	describe("Employees", () => {
@@ -1087,6 +1088,58 @@ describe("Test", () => {
 			&& expect(obj.body.isbn).to.equal("1000000002")
 
 		})
+
+	});
+
+	describe("Posts", () => {
+
+		it('All Posts', async () => {
+
+			const myEvent = {...event}; // clone
+			myEvent.queryStringParameters = { data: 'posts' };
+
+			const obj = (await test.get(myEvent));
+
+			expect(obj.statusCode).to.equal(200)
+			&& expect(typeof obj.body).to.equal('object')
+			&& expect(obj.body.length).to.equal(6)
+			&& expect(obj.body[5].id).to.equal("123006")
+
+		})
+
+		it('Post by ID 123005', async () => {
+
+			const myEvent = {...event}; // clone
+			myEvent.queryStringParameters = { data: 'posts', id: '123005' };
+
+			const obj = (await test.get(myEvent));
+
+			expect(obj.statusCode).to.equal(200)
+			&& expect(typeof obj.body).to.equal('object')
+			&& expect(obj.body.id).to.equal("123005")
+			&& expect(obj.body.title).to.equal("The Art of Computer Programming")
+			&& expect(obj.body.author).to.equal("H. Smith")
+			&& expect(obj.body.date).to.equal("2023-04-06T00:00:00.000Z")
+
+		})
+
+		it('Post by ID 123003', async () => {
+
+			const myEvent = {...event}; // clone
+			myEvent.queryStringParameters = { data: 'posts', id: '123003' };
+
+			const obj = (await test.get(myEvent));
+
+			// console.log("RESP | "+JSON.stringify(obj), obj);
+
+			expect(obj.statusCode).to.equal(200)
+			&& expect(typeof obj.body).to.equal('object')
+			&& expect(obj.body.id).to.equal("123003")
+			&& expect(obj.body.author).to.equal("Charlotte  Terwilliger")
+			&& expect(obj.body.title).to.equal("5 Ways You Are Coding Everything Wrong")
+			&& expect(obj.body.date).to.equal("2023-03-05T23:10:00.000Z")
+
+		})	
 
 	});
 
