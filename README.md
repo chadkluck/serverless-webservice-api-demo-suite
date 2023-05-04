@@ -11,7 +11,7 @@ It is recommend that you have some understanding of CloudFormation, API Gateway,
 ## Endpoints
 
 - Root
-- Ball
+- 8Ball
 - Games
 - UMWUG
 - ELUNA
@@ -43,15 +43,15 @@ Endpoint: `/`
 
 ### 8 Ball
 
-Provides a prediction to a yes/no question, lucky numbers, and certainty of the prediction/lucky number.
+Provides a prediction to a yes/no question, lucky numbers, and certainty of the prediction/lucky number. (For entertainment purposes only)
 
 Can be used as an example API and incorporated into sample code.
 
-Request prediction, numbers, and certainty: `/ball`
+Request prediction, numbers, and certainty: `/8ball`
 
-Request a prediction only: `/ball?code=prediction`
+Request a prediction only: `/8ball?code=prediction`
 
-The code parameter may also be set to `certainty` or `luckynumbers` to return only those.
+The code parameter may also be set to `certainty` or `luckynumbers` to return only those data points.
 
 ### Games
 

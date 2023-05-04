@@ -13,48 +13,189 @@ info:
 paths: 
   /:
     get:
-      description: "GET or POST may be used. The request and response is the same."
-      parameters:
-        - $ref: '#/components/parameters/id'
+      description: "Root endpoint that lists available endpoints and examples."
       responses:
         '200':
           description: "Response OK"
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ResponseObject'
-        '304':
-          description: "Not Modified"
-        '403':
-          description: Not Authorized. IP or Referer not authorized.
-          content:
-            text/plain:
-              schema:
-                $ref: '#/components/schemas/403'
+                $ref: '#/components/schemas/RootResponseObject'
       x-amazon-apigateway-integration:
         httpMethod: post
         type: aws_proxy
         uri:
           Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${AppFunction.Arn}/invocations
     post:
-      description: "GET or POST may be used. The request and response is the same."
-      parameters:
-        - $ref: '#/components/parameters/id'
+      description: "Root endpoint that lists available endpoints and examples."
       responses:
         '200':
           description: "Response OK"
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ResponseObject'
-        '304':
-          description: "Not Modified"
-        '403':
-          description: Not Authorized. IP or Referer not authorized.
+                $ref: '#/components/schemas/RootResponseObject'
+      x-amazon-apigateway-integration:
+        httpMethod: post
+        type: aws_proxy
+        uri:
+          Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${AppFunction.Arn}/invocations
+  8ball/:
+    get:
+      description: "Predictions from a magical endpoint. (For entertainment purposes only)"
+      parameters:
+        - $ref: '#/components/parameters/BallCode'
+      responses:
+        '200':
+          description: "Response OK"
           content:
-            text/plain:
+            application/json:
               schema:
-                $ref: '#/components/schemas/403'
+                $ref: '#/components/schemas/BallResponseObject'
+      x-amazon-apigateway-integration:
+        httpMethod: post
+        type: aws_proxy
+        uri:
+          Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${AppFunction.Arn}/invocations
+    post:
+      description: "Predictions from a magical endpoint. (For entertainment purposes only)"
+      parameters:
+        - $ref: '#/components/parameters/BallCode'
+      responses:
+        '200':
+          description: "Response OK"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BallResponseObject'
+      x-amazon-apigateway-integration:
+        httpMethod: post
+        type: aws_proxy
+        uri:
+          Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${AppFunction.Arn}/invocations
+  games/:
+    get:
+      description: "A list of games. Is it a simulation?"
+      parameters:
+        - $ref: '#/components/parameters/GamesCode'
+      responses:
+        '200':
+          description: "Response OK"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GamesResponseObject'
+      x-amazon-apigateway-integration:
+        httpMethod: post
+        type: aws_proxy
+        uri:
+          Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${AppFunction.Arn}/invocations
+    post:
+      description: "A list of games. Is it a simulation?"
+      parameters:
+        - $ref: '#/components/parameters/GamesCode'
+      responses:
+        '200':
+          description: "Response OK"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GamesResponseObject'
+      x-amazon-apigateway-integration:
+        httpMethod: post
+        type: aws_proxy
+        uri:
+          Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${AppFunction.Arn}/invocations
+  eluna/:
+    get:
+      description: "Example endpoint from ELUNA conference presentation."
+      parameters:
+        - $ref: '#/components/parameters/ELUNACode'
+      responses:
+        '200':
+          description: "Response OK"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ELUNAResponseObject'
+      x-amazon-apigateway-integration:
+        httpMethod: post
+        type: aws_proxy
+        uri:
+          Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${AppFunction.Arn}/invocations
+    post:
+      description: "Example endpoint from ELUNA conference presentation."
+      parameters:
+        - $ref: '#/components/parameters/ELUNACode'
+      responses:
+        '200':
+          description: "Response OK"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ELUNAResponseObject'
+      x-amazon-apigateway-integration:
+        httpMethod: post
+        type: aws_proxy
+        uri:
+          Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${AppFunction.Arn}/invocations
+  umwug/:
+    get:
+      description: "Example endpoint from UMWUG conference presentation."
+      parameters:
+        - $ref: '#/components/parameters/UMWUGCode'
+      responses:
+        '200':
+          description: "Response OK"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UMWUGResponseObject'
+      x-amazon-apigateway-integration:
+        httpMethod: post
+        type: aws_proxy
+        uri:
+          Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${AppFunction.Arn}/invocations
+    post:
+      description: "Example endpoint from UMWUG conference presentation."
+      parameters:
+        - $ref: '#/components/parameters/UMWUGCode'
+      responses:
+        '200':
+          description: "Response OK"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UMWUGResponseObject'
+      x-amazon-apigateway-integration:
+        httpMethod: post
+        type: aws_proxy
+        uri:
+          Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${AppFunction.Arn}/invocations
+  weather/:
+    get:
+      description: "Example endpoint for weather information."
+      responses:
+        '200':
+          description: "Response OK"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WeatherResponseObject'
+      x-amazon-apigateway-integration:
+        httpMethod: post
+        type: aws_proxy
+        uri:
+          Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${AppFunction.Arn}/invocations
+    post:
+      description: "Example endpoint for weather information."
+      responses:
+        '200':
+          description: "Response OK"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WeatherResponseObject'
       x-amazon-apigateway-integration:
         httpMethod: post
         type: aws_proxy
@@ -63,19 +204,92 @@ paths:
 
 components:
   parameters:
-    id:
-      name: id
+    BallCode:
+      name: code
       in: query
-      description: "Just a random ID that isn't necessary"
+      description: "Specify a specific data point to return from the 8 Ball endpoint. If not included, or invalid, all data points are returned."
       schema:
         type: string
+        enum:
+          - list
+          - prediction
+          - luckynumbers
+          - certainty
+    GamesCode:
+      name: code
+      in: query
+      description: "Specify a specific data point to return from the Games endpoint. If not included, or invalid, all data points are returned."
+      schema:
+        type: string
+        enum:
+          - greeting
+          - name
+          - random
+          - list
+    ELUNACode:
+      name: code
+      in: query
+      description: "Specify a specific data point to return from the Games endpoint. If not included, or invalid, all data points are returned."
+      schema:
+        type: string
+        enum:
+          - bao
+          - cbl
+          - lvp
+          - cpe
+          - dev
+          - doc
+          - lhf
+          - git
+          - bns
+          - 8bl
+    UMWUGCode:
+      name: code
+      in: query
+      description: "Specify a specific data point to return from the Games endpoint. If not included, or invalid, all data points are returned."
+      schema:
+        type: string
+        enum:
+          - bao
+          - cbl
+          - lvp
+          - cpe
+          - dev
+          - doc
+          - lhf
+          - git
+          - bns
 
   schemas:
-    '403':
-      title: Not authorized
-      type: string
-
-    ResponseObject:
+    RootResponseObject:
+      title: A response object
+      description: "A response object containing data"
+      type: object
+    BallResponseObject:
+      title: A response object
+      description: "A response object containing data"
+      type: object
+    GamesResponseObject:
+      title: A response object
+      description: "A response object containing data"
+      type: object
+    ELUNAResponseObject:
+      title: A response object
+      description: "A response object containing data"
+      type: object
+    UMWUGResponseObject:
+      title: A response object
+      description: "A response object containing data"
+      type: object
+    WeatherResponseObject:
+      title: A response object
+      description: "A response object containing data"
+      type: object
+    EchoResponseObject:
+      title: A response object
+      description: "A response object containing data"
+      type: object
+    TestResponseObject:
       title: A response object
       description: "A response object containing data"
       type: object

@@ -23,13 +23,13 @@ const data = {
 			description: '',
 			methods: ['GET'],
 			domain: '{{domain}}',
-			path: '{{path}}/ball',
+			path: '{{path}}/8ball',
 			examples: [
-				'https://{{domain}}{{path}}/ball',
-				'https://{{domain}}{{path}}/ball?code=prediction',
-				'https://{{domain}}{{path}}/ball?code=luckynumbers',
-				'https://{{domain}}{{path}}/ball?code=certainty',
-				'https://{{domain}}{{path}}/ball?code=list'
+				'https://{{domain}}{{path}}/8ball',
+				'https://{{domain}}{{path}}/8ball?code=prediction',
+				'https://{{domain}}{{path}}/8ball?code=luckynumbers',
+				'https://{{domain}}{{path}}/8ball?code=certainty',
+				'https://{{domain}}{{path}}/8ball?code=list'
 			]
 		},
 		{
@@ -78,7 +78,10 @@ const data = {
 			description: '',
 			methods: ['GET'],
 			domain: '{{domain}}',
-			path: '{{path}}/weather'
+			path: '{{path}}/weather',
+			examples: [
+				'https://{{domain}}{{path}}/weather'
+			]
 		},
 		{
 			name: 'Test',

@@ -200,7 +200,7 @@ const processRequest = async function(event, context) {
 					const code = ('queryStringParameters' in event && event.queryStringParameters !== null && 'code' in event.queryStringParameters) ? event.queryStringParameters.code : null;
 
 					switch (id) {
-						case 'ball':
+						case '8ball':
 							appTasks.push(ball.get(code));
 							break;
 						case 'games':
