@@ -50,9 +50,13 @@ putkey() {
   else
     echo "...parameter does not exist..."
 
+    local CIPHKEY="NOTSET"
+
     if [ "$#" -lt 2 ]; then # we did not supply a default value so generate a key
       echo "Generating key for SSM Parameter: $PARAM_FULL_NAME ..."
-      local CIPHKEY=$(generatekey)
+      CIPHKEY=$(generatekey)
+    else
+      CIPHKEY=$2 # use a default value
     fi
 
     local TAGS="Key=awscodestar:projectArn,Value=arn:aws:codestar:$REGION_ID:$ACCOUNT_ID:project/$PROJECT_ID"
