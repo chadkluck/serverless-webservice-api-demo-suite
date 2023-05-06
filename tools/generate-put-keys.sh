@@ -91,5 +91,5 @@ BITS=$2
 DIVBY=4
 KEY_LEN=$((BITS/DIVBY)) #divide number of bits needed by 4 because that is what hex will give us
 
-putkey "crypt_secureDataKey"
-putkey "weather_appid" "NOTSET"
+putkey "crypt_secureDataKey" # call putkey() to gen a key and put it in SSM param store
+putkey "weather_appid" "NOTSET" # call putkey() but do NOT generate a key - set it to NOTSET - and put in SSM param store
