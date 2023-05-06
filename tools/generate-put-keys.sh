@@ -49,9 +49,12 @@ putkey() {
     echo "Parameter already exists. Skipping."
   else
     echo "...parameter does not exist..."
-    echo "Generating key for SSM Parameter: $PARAM_FULL_NAME ..."
-    local CIPHKEY=$(generatekey)
-    
+
+    if [ "$#" -lt 2 ]; then # we did not supply a default value so generate a key
+      echo "Generating key for SSM Parameter: $PARAM_FULL_NAME ..."
+      local CIPHKEY=$(generatekey)
+    fi
+
     local TAGS="Key=awscodestar:projectArn,Value=arn:aws:codestar:$REGION_ID:$ACCOUNT_ID:project/$PROJECT_ID"
 
     # Borrowed from https://aws.amazon.com/blogs/mt/using-aws-systems-manager-parameter-store-secure-string-parameters-in-aws-cloudformation-templates/
@@ -85,3 +88,4 @@ DIVBY=4
 KEY_LEN=$((BITS/DIVBY)) #divide number of bits needed by 4 because that is what hex will give us
 
 putkey "crypt_secureDataKey"
+putkey "weather_appid" "NOTSET"
