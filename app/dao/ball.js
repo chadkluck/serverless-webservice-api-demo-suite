@@ -60,7 +60,7 @@ const luckyNumbers = function () {
 	for (let i = 0; i < 6; i++) {
 		let luckyNumber = 0;
 		do { // make sure all numbers in array are unique
-			luckyNumber = Math.floor(Math.random() * 99 );
+			luckyNumber = Math.floor(Math.random() * 98 ) + 1; // random number between 1 and 99
 		} while (numbers.includes(luckyNumber))
 		numbers[i] = luckyNumber;
 	}

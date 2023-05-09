@@ -262,34 +262,66 @@ components:
 
   schemas:
     RootResponseObject:
-      title: A response object
       description: "A response object containing data"
       type: object
     BallResponseObject:
-      title: A response object
-      description: "A response object containing data"
+      description: "A magical response object (for entertainment purposes only)"
       type: object
+      properties:
+        prediction:
+          description: "An insightful answer to a yes or no question"
+          type: string
+        lucky_numbers:
+          description: "An array of 6 unique and lucky integers between 1 and 99"
+          type: array
+          minItems: 6
+          maxItems: 6
+          uniqueItems: true
+          items:
+            type: integer
+            minimum: 1
+            maximum: 99
+        certainty:
+          description: "The amount of certainly given to a prediction"
+          type: float
+          minimum: 0
+          maximum: 1
+          exclusiveMaximum: true
     GamesResponseObject:
-      title: A response object
       description: "A response object containing data"
       type: object
+      properties:
+        gamechoices:
+          description: "A list of games to play"
+          type: array
+          items:
+            type: string
+        game:
+          description: "A random game picked from the list of gamechoices"
+          type: string
+        hiddengames:
+          description: "A list of hidden games not on the gamechoices list"
+          type: array
+          items:
+            type: string
+        greeting:
+          description: "A greeting"
+          type: string
+        name:
+          description: "A name for the computer"
+          type: string
     ELUNAResponseObject:
-      title: A response object
       description: "A response object containing data"
       type: object
     UMWUGResponseObject:
-      title: A response object
       description: "A response object containing data"
       type: object
     WeatherResponseObject:
-      title: A response object
       description: "A response object containing data"
       type: object
     EchoResponseObject:
-      title: A response object
       description: "A response object containing data"
       type: object
     TestResponseObject:
-      title: A response object
       description: "A response object containing data"
       type: object
