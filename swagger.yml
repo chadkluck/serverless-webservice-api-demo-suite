@@ -40,7 +40,7 @@ paths:
         type: aws_proxy
         uri:
           Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${AppFunction.Arn}/invocations
-  8ball/:
+  /8ball:
     get:
       description: "Predictions from a magical endpoint. (For entertainment purposes only)"
       parameters:
@@ -73,7 +73,7 @@ paths:
         type: aws_proxy
         uri:
           Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${AppFunction.Arn}/invocations
-  games/:
+  /games:
     get:
       description: "A list of games. Is it a simulation?"
       parameters:
@@ -106,7 +106,7 @@ paths:
         type: aws_proxy
         uri:
           Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${AppFunction.Arn}/invocations
-  eluna/:
+  /eluna:
     get:
       description: "Example endpoint from ELUNA conference presentation."
       parameters:
@@ -139,7 +139,7 @@ paths:
         type: aws_proxy
         uri:
           Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${AppFunction.Arn}/invocations
-  umwug/:
+  /umwug:
     get:
       description: "Example endpoint from UMWUG conference presentation."
       parameters:
@@ -172,7 +172,7 @@ paths:
         type: aws_proxy
         uri:
           Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${AppFunction.Arn}/invocations
-  weather/:
+  /weather:
     get:
       description: "Example endpoint for weather information."
       responses:
@@ -201,6 +201,269 @@ paths:
         type: aws_proxy
         uri:
           Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${AppFunction.Arn}/invocations
+  /test:
+    get:
+      description: "Example endpoint for test data."
+      responses:
+        '200':
+          description: "Response OK"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TestResponseObject'
+      x-amazon-apigateway-integration:
+        httpMethod: post
+        type: aws_proxy
+        uri:
+          Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${AppFunction.Arn}/invocations
+    post:
+      description: "Example endpoint for test data."
+      responses:
+        '200':
+          description: "Response OK"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TestResponseObject'
+      x-amazon-apigateway-integration:
+        httpMethod: post
+        type: aws_proxy
+        uri:
+          Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${AppFunction.Arn}/invocations
+  /echo:
+    get:
+      description: "Example endpoint for submitting a request for a particular response such as a loop back, HTTP status code, or response body."
+      responses:
+        '100':
+          description: "Continue"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EchoResponseCode'
+        '101':
+          description: "Switching Protocols"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EchoResponseCode'
+        '200':
+          description: "Response OK"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EchoResponseObject'
+        '201':
+          description: "Accepted"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EchoResponseCode'
+        '202':
+          description: "Created"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EchoResponseCode'
+        '203':
+          description: "Non-Authoritative Information"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EchoResponseCode'
+        '204':
+          description: "No Content"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EchoResponseCode'
+        '205':
+          description: "Reset Content"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EchoResponseCode'
+        '206':
+          description: "Partial Content"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EchoResponseCode'
+        '300':
+          description: "Multiple Choices"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EchoResponseCode'
+        '301':
+          description: "Moved Permanently"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EchoResponseRedirect'
+        '302':
+          description: "Moved Temporarily"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EchoResponseRedirect'
+        '303':
+          description: "See Other"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EchoResponseCode'
+        '304':
+          description: "Not Modified"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EchoResponseNotModified'
+        '305':
+          description: "Use Proxy"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EchoResponseCode'
+      x-amazon-apigateway-integration:
+        httpMethod: post
+        type: aws_proxy
+        uri:
+          Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${AppFunction.Arn}/invocations
+    post:
+      description: "Example endpoint for submitting a request for a particular response such as a loop back, HTTP status code, or response body."
+      responses:
+        '100':
+          description: "Continue"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EchoResponseCode'
+        '101':
+          description: "Switching Protocols"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EchoResponseCode'
+        '200':
+          description: "Response OK"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EchoResponseObject'
+        '201':
+          description: "Accepted"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EchoResponseCode'
+        '202':
+          description: "Created"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EchoResponseCode'
+        '203':
+          description: "Non-Authoritative Information"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EchoResponseCode'
+        '204':
+          description: "No Content"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EchoResponseCode'
+        '205':
+          description: "Reset Content"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EchoResponseCode'
+        '206':
+          description: "Partial Content"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EchoResponseCode'
+        '300':
+          description: "Multiple Choices"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EchoResponseCode'
+        '301':
+          description: "Moved Permanently"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EchoResponseRedirect'
+        '302':
+          description: "Moved Temporarily"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EchoResponseRedirect'
+        '303':
+          description: "See Other"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EchoResponseCode'
+        '304':
+          description: "Not Modified"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EchoResponseNotModified'
+        '305':
+          description: "Use Proxy"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EchoResponseCode'
+    # '401': 'Unauthorized',
+    # '402': 'Payment Required',
+    # '403': 'Forbidden',
+    # '404': 'Not Found',
+    # '405': 'Method Not Allowed',
+    # '406': 'Not Acceptable',
+    # '407': 'Proxy Authentication Required',
+    # '408': 'Request Time-out',
+    # '409': 'Conflict',
+    # '410': 'Gone',
+    # '411': 'Length Required',
+    # '412': 'Precondition Failed',
+    # '413': 'Request Entity Too Large',
+    # '414': 'Request-URI Too Large',
+    # '415': 'Unsupported Media Type',
+    # '418': 'I\'m a teapot',
+
+        '400':
+          description: "Bad Request"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EchoResponseCode'
+
+    # '501': 'Not Implemented',
+    # '502': 'Bad Gateway',
+    # '503': 'Service Unavailable',
+    # '504': 'Gateway Timeout',
+    # '505': 'HTTP Version Not Supported'
+
+        '500':
+          description: "Internal Server Error"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EchoResponseCode'
+      x-amazon-apigateway-integration:
+        httpMethod: post
+        type: aws_proxy
+        uri:
+          Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${AppFunction.Arn}/invocations
+
 
 components:
   parameters:
@@ -262,8 +525,45 @@ components:
 
   schemas:
     RootResponseObject:
-      description: "A response object containing data"
+      description: "A response object with endpoint examples"
       type: object
+      properties:
+        greeting:
+          description: "A greeting from the web service"
+          type: string
+        github:
+          description: "GitHub repository to download latest version of this demo suite"
+          type: string
+        description:
+          description: "The description of this web service"
+          type: string
+        available_endpoints:
+          description: "A list of available endpoints with examples"
+          type: array
+          items:
+            type: object
+            properties:
+              name:
+                description: "Name of the endpoint"
+                type: string
+              description:
+                description: "A description of the endpoint"
+                type: string
+              methods:
+                description: "Methods the endpoint will accept"
+                type: array
+                items:
+                  type: string
+              path:
+                description: "Path to the endpoint"
+                type: string
+              examples:
+                description: "A list of examples to use against the endpoint"
+                type: array
+                items:
+                  description: "An endpoint example"
+                  type: string
+              
     BallResponseObject:
       description: "A magical response object (for entertainment purposes only)"
       type: object
@@ -287,6 +587,7 @@ components:
           minimum: 0
           maximum: 1
           exclusiveMaximum: true
+
     GamesResponseObject:
       description: "A response object containing data"
       type: object
@@ -310,18 +611,35 @@ components:
         name:
           description: "A name for the computer"
           type: string
+
     ELUNAResponseObject:
       description: "A response object containing data"
       type: object
+
     UMWUGResponseObject:
       description: "A response object containing data"
       type: object
+
     WeatherResponseObject:
-      description: "A response object containing data"
+      description: "A response object containing weather data"
       type: object
-    EchoResponseObject:
-      description: "A response object containing data"
-      type: object
+
     TestResponseObject:
+      description: "A response object containing data"
+      type: object
+
+    EchoResponseCode:
+      description: "A response object containing data"
+      type: object
+
+    EchoResponseRedirect:
+      description: "A response object containing data"
+      type: object
+
+    EchoResponseNotModified:
+      description: "A response object containing data"
+      type: object
+
+    EchoResponseObject:
       description: "A response object containing data"
       type: object
