@@ -233,6 +233,8 @@ paths:
   /echo:
     get:
       description: "Example endpoint for submitting a request for a particular response such as a loop back, HTTP status code, or response body."
+      parameters:
+        - $ref: '#/components/parameters/Echo'
       responses:
         '100':
           description: "Continue"
@@ -296,161 +298,139 @@ paths:
                 $ref: '#/components/schemas/EchoResponseCode'
         '301':
           description: "Moved Permanently"
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/EchoResponseRedirect'
+          headers:
+            Location:
+              type: "string"
         '302':
           description: "Moved Temporarily"
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/EchoResponseRedirect'
+          headers:
+            Location:
+              type: "string"
         '303':
           description: "See Other"
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/EchoResponseCode'
+          headers:
+            Location:
+              type: "string"
         '304':
           description: "Not Modified"
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/EchoResponseNotModified'
         '305':
           description: "Use Proxy"
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/EchoResponseCode'
-      x-amazon-apigateway-integration:
-        httpMethod: post
-        type: aws_proxy
-        uri:
-          Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${AppFunction.Arn}/invocations
-    post:
-      description: "Example endpoint for submitting a request for a particular response such as a loop back, HTTP status code, or response body."
-      responses:
-        '100':
-          description: "Continue"
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/EchoResponseCode'
-        '101':
-          description: "Switching Protocols"
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/EchoResponseCode'
-        '200':
-          description: "Response OK"
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/EchoResponseObject'
-        '201':
-          description: "Accepted"
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/EchoResponseCode'
-        '202':
-          description: "Created"
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/EchoResponseCode'
-        '203':
-          description: "Non-Authoritative Information"
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/EchoResponseCode'
-        '204':
-          description: "No Content"
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/EchoResponseCode'
-        '205':
-          description: "Reset Content"
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/EchoResponseCode'
-        '206':
-          description: "Partial Content"
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/EchoResponseCode'
-        '300':
-          description: "Multiple Choices"
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/EchoResponseCode'
-        '301':
-          description: "Moved Permanently"
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/EchoResponseRedirect'
-        '302':
-          description: "Moved Temporarily"
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/EchoResponseRedirect'
-        '303':
-          description: "See Other"
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/EchoResponseCode'
-        '304':
-          description: "Not Modified"
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/EchoResponseNotModified'
-        '305':
-          description: "Use Proxy"
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/EchoResponseCode'
-    # '401': 'Unauthorized',
-    # '402': 'Payment Required',
-    # '403': 'Forbidden',
-    # '404': 'Not Found',
-    # '405': 'Method Not Allowed',
-    # '406': 'Not Acceptable',
-    # '407': 'Proxy Authentication Required',
-    # '408': 'Request Time-out',
-    # '409': 'Conflict',
-    # '410': 'Gone',
-    # '411': 'Length Required',
-    # '412': 'Precondition Failed',
-    # '413': 'Request Entity Too Large',
-    # '414': 'Request-URI Too Large',
-    # '415': 'Unsupported Media Type',
-    # '418': 'I\'m a teapot',
-
+        '307':
+          description: "Temporary Redirect"
+          headers:
+            Location:
+              type: "string"
+        '308':
+          description: "Permanent Redirect"
+          headers:
+            Location:
+              type: "string"
         '400':
           description: "Bad Request"
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/EchoResponseCode'
-
-    # '501': 'Not Implemented',
-    # '502': 'Bad Gateway',
-    # '503': 'Service Unavailable',
-    # '504': 'Gateway Timeout',
-    # '505': 'HTTP Version Not Supported'
+        '401':
+          description: "Unauthorized"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EchoResponseCode'
+        '402':
+          description: "Payment Required"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EchoResponseCode'
+        '403':
+          description: "Forbidden"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EchoResponseCode'
+        '404':
+          description: "Not Found"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EchoResponseCode'
+        '405':
+          description: "Method Not Allowed"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EchoResponseCode'
+        '406':
+          description: "Not Acceptable"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EchoResponseCode'
+        '407':
+          description: "Proxy Authentication Required"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EchoResponseCode'
+        '408':
+          description: "Request Time-out"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EchoResponseCode'
+        '409':
+          description: "Conflict"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EchoResponseCode'
+        '410':
+          description: "Gone"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EchoResponseCode'
+        '411':
+          description: "Length Required"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EchoResponseCode'
+        '412':
+          description: "Precondition Failed"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EchoResponseCode'
+        '413':
+          description: "Request Entity Too Large"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EchoResponseCode'
+        '414':
+          description: "Request-URI Too Large"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EchoResponseCode'
+        '415':
+          description: "Unsupported Media Type"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EchoResponseCode'
+        '418':
+          description: "I'm a teapot"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EchoResponseCode'
 
         '500':
           description: "Internal Server Error"
@@ -458,6 +438,279 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/EchoResponseCode'
+        '501':
+          description: "Not Implemented"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EchoResponseCode'
+        '502':
+          description: "Bad Gateway"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EchoResponseCode'
+        '503':
+          description: "Service Unavailable"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EchoResponseCode'
+        '504':
+          description: "Gateway Timeout"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EchoResponseCode'
+        '505':
+          description: "HTTP Version Not Supported"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EchoResponseCode'
+
+      x-amazon-apigateway-integration:
+        httpMethod: post
+        type: aws_proxy
+        uri:
+          Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${AppFunction.Arn}/invocations
+    post:
+      description: "Example endpoint for submitting a request for a particular response such as a loop back, HTTP status code, or response body."
+      parameters:
+        - $ref: '#/components/parameters/Echo'
+      responses:
+        '100':
+          description: "Continue"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EchoResponseCode'
+        '101':
+          description: "Switching Protocols"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EchoResponseCode'
+        '200':
+          description: "Response OK"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EchoResponseObject'
+        '201':
+          description: "Accepted"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EchoResponseCode'
+        '202':
+          description: "Created"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EchoResponseCode'
+        '203':
+          description: "Non-Authoritative Information"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EchoResponseCode'
+        '204':
+          description: "No Content"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EchoResponseCode'
+        '205':
+          description: "Reset Content"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EchoResponseCode'
+        '206':
+          description: "Partial Content"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EchoResponseCode'
+        '300':
+          description: "Multiple Choices"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EchoResponseCode'
+        '301':
+          description: "Moved Permanently"
+          headers:
+            Location:
+              type: "string"
+        '302':
+          description: "Moved Temporarily"
+          headers:
+            Location:
+              type: "string"
+        '303':
+          description: "See Other"
+          headers:
+            Location:
+              type: "string"
+        '304':
+          description: "Not Modified"
+        '305':
+          description: "Use Proxy"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EchoResponseCode'
+        '307':
+          description: "Temporary Redirect"
+          headers:
+            Location:
+              type: "string"
+        '308':
+          description: "Permanent Redirect"
+          headers:
+            Location:
+              type: "string"
+        '400':
+          description: "Bad Request"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EchoResponseCode'
+        '401':
+          description: "Unauthorized"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EchoResponseCode'
+        '402':
+          description: "Payment Required"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EchoResponseCode'
+        '403':
+          description: "Forbidden"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EchoResponseCode'
+        '404':
+          description: "Not Found"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EchoResponseCode'
+        '405':
+          description: "Method Not Allowed"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EchoResponseCode'
+        '406':
+          description: "Not Acceptable"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EchoResponseCode'
+        '407':
+          description: "Proxy Authentication Required"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EchoResponseCode'
+        '408':
+          description: "Request Time-out"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EchoResponseCode'
+        '409':
+          description: "Conflict"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EchoResponseCode'
+        '410':
+          description: "Gone"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EchoResponseCode'
+        '411':
+          description: "Length Required"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EchoResponseCode'
+        '412':
+          description: "Precondition Failed"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EchoResponseCode'
+        '413':
+          description: "Request Entity Too Large"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EchoResponseCode'
+        '414':
+          description: "Request-URI Too Large"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EchoResponseCode'
+        '415':
+          description: "Unsupported Media Type"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EchoResponseCode'
+        '418':
+          description: "I'm a teapot"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EchoResponseCode'
+        '500':
+          description: "Internal Server Error"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EchoResponseCode'
+        '501':
+          description: "Not Implemented"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EchoResponseCode'
+        '502':
+          description: "Bad Gateway"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EchoResponseCode'
+        '503':
+          description: "Service Unavailable"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EchoResponseCode'
+        '504':
+          description: "Gateway Timeout"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EchoResponseCode'
+        '505':
+          description: "HTTP Version Not Supported"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EchoResponseCode'
+
       x-amazon-apigateway-integration:
         httpMethod: post
         type: aws_proxy
@@ -468,60 +721,84 @@ paths:
 components:
   parameters:
     BallCode:
-      name: code
-      in: query
-      description: "Specify a specific data point to return from the 8 Ball endpoint. If not included, or invalid, all data points are returned."
-      schema:
-        type: string
-        enum:
-          - list
-          - prediction
-          - luckynumbers
-          - certainty
+      - name: code
+        in: query
+        description: "Specify a specific data point to return from the 8 Ball endpoint. If not included, or invalid, all data points are returned."
+        schema:
+          type: string
+          enum:
+            - list
+            - prediction
+            - luckynumbers
+            - certainty
     GamesCode:
-      name: code
-      in: query
-      description: "Specify a specific data point to return from the Games endpoint. If not included, or invalid, all data points are returned."
-      schema:
-        type: string
-        enum:
-          - greeting
-          - name
-          - random
-          - list
+      - name: code
+        in: query
+        description: "Specify a specific data point to return from the Games endpoint. If not included, or invalid, all data points are returned."
+        schema:
+          type: string
+          enum:
+            - greeting
+            - name
+            - random
+            - list
     ELUNACode:
-      name: code
-      in: query
-      description: "Specify a specific data point to return from the Games endpoint. If not included, or invalid, all data points are returned."
-      schema:
-        type: string
-        enum:
-          - bao
-          - cbl
-          - lvp
-          - cpe
-          - dev
-          - doc
-          - lhf
-          - git
-          - bns
-          - 8bl
+      - name: code
+        in: query
+        description: "Specify a specific data point to return from the Games endpoint. If not included, or invalid, all data points are returned."
+        schema:
+          type: string
+          enum:
+            - bao
+            - cbl
+            - lvp
+            - cpe
+            - dev
+            - doc
+            - lhf
+            - git
+            - bns
+            - 8bl
     UMWUGCode:
-      name: code
-      in: query
-      description: "Specify a specific data point to return from the Games endpoint. If not included, or invalid, all data points are returned."
-      schema:
-        type: string
-        enum:
-          - bao
-          - cbl
-          - lvp
-          - cpe
-          - dev
-          - doc
-          - lhf
-          - git
-          - bns
+      - name: code
+        in: query
+        description: "Specify a specific data point to return from the Games endpoint. If not included, or invalid, all data points are returned."
+        schema:
+          type: string
+          enum:
+            - bao
+            - cbl
+            - lvp
+            - cpe
+            - dev
+            - doc
+            - lhf
+            - git
+            - bns
+    Echo:
+      - name: status
+        in: query
+        description: "HTTP status code to receive as a response"
+        schema:
+          type: string
+      - name: etag
+        in: query
+        description: "ETag to return in response header. Used to compare against if-none-match request header sent to test 304 Not Modified."
+        schema:
+          type: string
+      - name: lastmodified
+        in: query
+        description: "Last Modified date to return in response header. Any date format works. Used to compare against if-modified-since request header sent to test 304 Not Modified."
+        schema:
+          type: string
+      - in: header
+        name: if-none-match
+        schema:
+          type: string
+      - in: header
+        name: if-modified-since
+        schema:
+          type: string
 
   schemas:
     RootResponseObject:
@@ -627,18 +904,105 @@ components:
     TestResponseObject:
       description: "A response object containing data"
       type: object
+      properties:
+        employees:
+          $ref: '#/components/schemas/TestResponseEmployee'
+        books:
+          $ref: '#/components/schemas/TestResponseBooks'
+        posts:
+          $ref: '#/components/schemas/TestResponsePost'
+
+    TestResponseBooks:
+      description: "A list of books"
+      type: array
+      properties:
+        items:
+          $ref: '#/components/schemas/TestResponseBook'
+
+    TestResponseBook:
+      description: ""
+      type: object
+      properties:
+        title:
+          type: string
+          example: "Hello, World"
+        author:
+          type: string
+          example: "Jane Doe"
+        id:
+          type: string
+          example: "1234567-001"
+        isbn: 
+          type: string
+          example: "1000000001"
+        year: 
+          type: string
+          example: "2019"
+
+    TestResponseEmployees:
+      description: "A list of employees"
+      type: array
+      properties:
+        items:
+          $ref: '#/components/schemas/TestResponseEmployee'
+
+    TestResponseEmployee:
+      description: "An employee"
+      type: object
+      properties:
+        name:
+          type: string
+          example: "John Doe"
+        id:
+          type: string
+          example: "100000001"
+        department:
+          type: string
+          example: "Engineering"
+        city:
+          type: string
+          example: "Austin"
+        salary:
+          type: number
+          example: 150000
+
+    TestResponsePosts:
+      description: ""
+      type: array
+      properties:
+        items:
+          $ref: '#/components/schemas/TestResponsePost'
+
+    TestResponsePost:
+      description: ""
+      type: object
+      properties:
+        title:
+          type: string
+          example: "Hello, World"
+        author:
+          type: string
+          example: "Urs Barnes"
+        id:
+          type: string
+          example: "123001"
+        date:
+          type: string
+          example: "2019-01-01T00:00:00.000Z"
+        content:
+          type: string
+          example: "Hello, World!"
 
     EchoResponseCode:
-      description: "A response object containing data"
+      description: "A sample error response for the status code requested by the client"
       type: object
-
-    EchoResponseRedirect:
-      description: "A response object containing data"
-      type: object
-
-    EchoResponseNotModified:
-      description: "A response object containing data"
-      type: object
+      properties:
+        status:
+          description: "The HTTP status code"
+          type: integer
+        message:
+          description: "The HTTP status code message"
+          type: string
 
     EchoResponseObject:
       description: "A response object containing data"

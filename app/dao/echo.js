@@ -18,6 +18,8 @@ const statusCodes = {
     '303': 'See Other',
     '304': 'Not Modified',
     '305': 'Use Proxy',
+	'307': 'Temporary Redirect',
+	'308': 'Permanent Redirect',
     '400': 'Bad Request',
     '401': 'Unauthorized',
     '402': 'Payment Required',
@@ -84,7 +86,9 @@ const get = async (event) => {
 				const obj = getStatusCode(eventParameters.status);
 				response.statusCode = obj.status;
 
-				if (response.statusCode === 301 || response.statusCode === 302) {
+				// check to see if response.statusCode is in an array of redirect values
+				let redirectCodes = [301, 302, 303, 307, 308];
+				if (redirectCodes.includes(response.statusCode)) {
 					response.headers = { Location: "https://api.chadkluck.net/games" };
 				} else {
 					if ( !('accept' in eventHeaders) || ('accept' in eventHeaders && eventHeaders['accept'] !== 'text/plain' ) ) {
