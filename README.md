@@ -113,6 +113,32 @@ You can also send a `POST` request with a body containing the data you wish to h
 
 ### Test
 
-`/test`
+Return all test data: `/test`
+
+#### Test Posts
+
+All posts: `/test?data=posts`
+
+Single post with ID: `/test?data=posts&id=123003`
+
+#### Test Books
+
+All books: `/test?data=books`
+
+Single book with ID: `/test?data=books&id=1234567-001`
+
+Single book with ISBN: `/test?data=books&isbn=1000000002`
+
+#### Test Employees
+
+All employees: `/test?data=employees`
+
+Single employee with ID: `/test?data=employees&id=100000001`
 
 ## Installation
+
+Atlantis is a CloudFormation template that produces a CodePipeline. This application is already set up to work with the pipeline.
+
+1. Place this code in an AWS CodeCommit repository.
+2. Create a CloudFormation stack for the pipeline using [Serverless Deploy Pipeline Atlantis](https://github.com/chadkluck/serverless-deploy-pipeline-atlantis) and point it to the repository.
+3. Once the pipeline is set up, it will find the code and deploy the application's infrastructure stack.
