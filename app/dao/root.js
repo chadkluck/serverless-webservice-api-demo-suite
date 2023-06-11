@@ -1,6 +1,6 @@
 const data = {
 	greeting: 'Welcome to the 63K-Labs API Test Suite by Chad Leigh Kluck',
-	github: '',
+	github: 'https://github.com/chadkluck/serverless-webservice-api-demo-suite',
 	description: 'A suite of apis that can be used as examples and for testing. Visit the GitHub repository link to learn more about each',
 	available_endpoints: [
 		{
