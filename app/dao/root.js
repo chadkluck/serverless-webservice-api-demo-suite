@@ -130,7 +130,8 @@ const get = async (event) => {
 
         try {
 			const domain = event.requestContext.domainName;
-			const path = event.requestContext.path.replace(/^\/|\/$/g, '');
+			let path = "";
+			if ('path' in event.requestContext) { path = event.requestContext.path.replace(/^\/|\/$/g, ''); }
 			if (path !== "") { path = '/' + path; } // custom domains may exclude the path
 
 			const domainRegEx = new RegExp('{{domain}}', 'gi');
