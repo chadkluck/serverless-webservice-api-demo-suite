@@ -1,5 +1,7 @@
 # Serverless Webservice API Demo Suite
 
+> This project has been replaced by the [Atlantis CloudFormation Template Repository](https://github.com/63Klabs/atlantis-cfn-template-repo-for-serverless-deployments), [Atlantis SAM Configuration Repository](https://github.com/63Klabs/atlantis-cfn-configuration-repo-for-serverless-deployments), and [starter applications and tutorials](https://github.com/63Klabs/atlantis-tutorials) available from my [63Klabs](https://github.com/63klabs) projects.
+> 
 An API with nine endpoints to be used as learning examples or for tests. 
 
 The root endpoint will list examples. Ball, Games, UMWUG, ELUNA, and Weather endpoints can be used as coding examples. Echo and Test can be used as tests. Echo can invoke specific responses including HTTP status and body values to test against your code. Test endpoint can be extended to return any test data you wish.
